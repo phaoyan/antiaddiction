@@ -1,0 +1,31 @@
+.label{
+    color:cadetblue;
+    font-style:oblique;
+    font-size:110%;
+    font-weight: 100;
+    padding-bottom: 1vh;
+}
+.title{
+    font-size: 110%;
+    font-weight: 200;
+    font-style: oblique;
+    color:darkgreen;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+.container{
+    width:80vw;
+    height: 72vh;
+    margin: 0 auto;
+}
+input{
+    width:25vw;
+    border: 0px; 
+    border-bottom: 1px solid cadetblue;
+    background-color:#fcfdfa;
+    outline: none;
+    font-size: 100%;
+    font-style: oblique;
+}

@@ -1,0 +1,46 @@
+[
+    {
+        "behaviorList": [
+            {
+                "startTime": "2022-09-01 19:33:54",
+                "endTime": "2022-09-01 19:33:54",
+                "name": "program",
+                "details": [
+                    {
+                        "overallEnvironment": {
+                            "moment": "2022-09-01 19:33:53",
+                            "datum": [
+                                {
+                                    "className": "demo.model.environment.environment.cptenviroment.ComputerProcess",
+                                    "processName": "idea64.exe",
+                                    "memoryUsage": 2038200
+                                },
+                                {
+                                    "className": "demo.model.environment.environment.cptenviroment.ComputerProcess",
+                                    "processName": "Code.exe",
+                                    "memoryUsage": 42160
+                                },
+                                {
+                                    "className": "demo.model.environment.environment.cptenviroment.ComputerProcess",
+                                    "processName": "powershell.exe",
+                                    "memoryUsage": 40080
+                                },
+                                {
+                                    "className": "demo.model.environment.environment.cptenviroment.ComputerProcess",
+                                    "processName": "ONENOTE.EXE",
+                                    "memoryUsage": 42248
+                                },
+                                {
+                                    "className": "demo.model.environment.environment.cptenviroment.ComputerScreenData",
+                                    "imgSrcString": "D:\\coding\\javaProject\\springProject\\demo\\src\\main\\resources\\static\\img\\screen\\2022-09-01T19-33-54.jpg"
+                                }
+                            ]
+                        },
+                        "moment": "2022-09-01 19:33:54",
+                        "name": "program"
+                    }
+                ]
+            }
+        ]
+    }
+]
