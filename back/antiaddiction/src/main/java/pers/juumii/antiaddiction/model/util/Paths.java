@@ -4,8 +4,8 @@ public class Paths {
 
     private Paths(){}
 
-    public static final String ABSOLUTE_PREFIX = "D:/coding/projects/applicationProjects/antiaddiction/back/antiaddiction/";
-    public static final String RESOURCES_PATH = "src/main/resources";
+    public static final String ABSOLUTE_PREFIX = "D:/coding/projects/applicationProjects/antiaddiction/";
+    public static final String RESOURCES_PATH = "back/antiaddiction/src/main/resources";
     public static final String STATIC_PATH = RESOURCES_PATH + "/static";
     public static final String JSON_PATH = STATIC_PATH + "/json";
     public static final String DATA_LIST_PATH = JSON_PATH + "/dataList.json";

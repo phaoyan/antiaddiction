@@ -5,7 +5,9 @@ package pers.juumii.antiaddiction;
 import pers.juumii.antiaddiction.model.pattern.PatternList;
 import pers.juumii.antiaddiction.model.pattern.handler.WebsiteRedirectionImpl;
 import pers.juumii.antiaddiction.model.util.IOCContainer;
+import pers.juumii.antiaddiction.model.util.Paths;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -81,13 +83,15 @@ public class Main {
 
 //        System.out.println("hello git");
 
-        IOCContainer.initialize();
+//        IOCContainer.initialize();
+//
+//        WebsiteRedirectionImpl impl = new WebsiteRedirectionImpl();
+//        impl.setSourceUrl("http://www.jyeoo.com/");
+//        impl.setTargetUrl("https://cn.bing.com/");
+//        PatternList.getInstance().setHandler(0,impl);
 
-        WebsiteRedirectionImpl impl = new WebsiteRedirectionImpl();
-        impl.setSourceUrl("http://www.jyeoo.com/");
-        impl.setTargetUrl("https://cn.bing.com/");
-        PatternList.getInstance().setHandler(0,impl);
-
+        File file = new File(Paths.DATA_LIST_PATH);
+        System.out.println(file.getAbsolutePath());
 
     }
 
