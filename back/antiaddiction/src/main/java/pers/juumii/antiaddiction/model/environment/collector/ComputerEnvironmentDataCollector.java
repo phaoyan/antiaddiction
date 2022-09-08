@@ -2,7 +2,11 @@ package pers.juumii.antiaddiction.model.environment.collector;
 
 
 import pers.juumii.antiaddiction.model.environment.environment.Environment;
+import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerEnvironment;
+import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerEnvironmentData;
+
+import java.util.Collections;
 
 public class ComputerEnvironmentDataCollector implements DataCollector{
 
@@ -34,11 +38,14 @@ public class ComputerEnvironmentDataCollector implements DataCollector{
     public Environment collect(){ //用于收集computer environment data，任务委派给下层完成
         ComputerEnvironment res = new ComputerEnvironment();
 
+
         res.construct(processDataCollector.collect());
         res.construct(screenDataCollector.collect());
         res.construct(netDataCollector.collect());
         res.construct(websiteBrowsingDataCollector.collect());
 
+
+        res.getDatum().removeAll(Collections.singleton(null));
 
         return res;
     }

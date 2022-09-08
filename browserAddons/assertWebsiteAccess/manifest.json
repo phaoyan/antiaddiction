@@ -1,0 +1,14 @@
+{
+    "name": "assertWebsiteAccess",
+    "version": "0.0.0.1",
+    "manifest_version": 3,
+
+  
+    
+    "content_scripts": [
+        {
+          "matches": ["*://*/*"],
+          "js": ["assert.js"]
+        }
+      ]
+}

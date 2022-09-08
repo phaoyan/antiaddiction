@@ -11,17 +11,14 @@ public class WebsiteBrowsingData implements ComputerEnvironmentData{
 
     public URL url;
 
-    public WebsiteBrowsingData(){
-        try {
-            this.url = new URL("https://www.bilibili.com/video/BV14u411d7BN?spm_id_from=333.337.search-card.all.click");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public WebsiteBrowsingData(){}
     public WebsiteBrowsingData(URL url){
         this.url = url;
     }
     public WebsiteBrowsingData(JsonElement json) throws MalformedURLException {
+        if(json.getAsJsonObject().get("url") == null)
+            return;
+
         this.url = new URL(json.getAsJsonObject().get("url").getAsString());
     }
 
@@ -35,7 +32,9 @@ public class WebsiteBrowsingData implements ComputerEnvironmentData{
 
     @Override
     public int getIdCode() {
-        return url.hashCode();
+        if(url == null)
+            return -1;
+        return url.toString().hashCode();
     }
 
     @Override

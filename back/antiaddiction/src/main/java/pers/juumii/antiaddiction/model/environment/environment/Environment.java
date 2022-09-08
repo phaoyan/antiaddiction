@@ -41,6 +41,8 @@ public abstract class Environment {
     }
 
     public void construct(Environment environment){
+        if(environment == null)
+            return;
         datum.addAll(environment.getDatum());
     }
 

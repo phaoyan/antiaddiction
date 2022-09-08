@@ -18,6 +18,10 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException {
+
+        File file = new File(Paths.DATA_LIST_PATH);
+        System.out.println(file.getAbsolutePath());
+
 //        OverallEnvironment environment = new OverallEnvironment();
 //        MomentaryBehavior behavior = new MomentaryBehavior();
 //        behavior.setName("testName");
@@ -90,8 +94,7 @@ public class Main {
 //        impl.setTargetUrl("https://cn.bing.com/");
 //        PatternList.getInstance().setHandler(0,impl);
 
-        File file = new File(Paths.DATA_LIST_PATH);
-        System.out.println(file.getAbsolutePath());
+
 
     }
 

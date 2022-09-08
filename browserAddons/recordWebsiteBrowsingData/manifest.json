@@ -1,0 +1,15 @@
+{
+    "name": "browsing history",
+    "version": "0.0.0.1",
+    "manifest_version": 3,
+    "description": "record website browing history",
+
+  
+    
+    "content_scripts": [
+        {
+          "matches": ["*://*/*"],
+          "js": ["record.js"]
+        }
+      ]
+}

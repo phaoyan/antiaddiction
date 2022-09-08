@@ -8,6 +8,7 @@ import pers.juumii.antiaddiction.model.behavior.collector.MomentaryBehaviorColle
 import pers.juumii.antiaddiction.model.behavior.collector.TimedBehaviorCollector;
 import pers.juumii.antiaddiction.model.environment.collector.*;
 import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
+import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerEnvironment;
 import pers.juumii.antiaddiction.model.pattern.PatternList;
 import pers.juumii.antiaddiction.model.pattern.collector.BehaviorPatternCollector;
 import pers.juumii.antiaddiction.model.pattern.collector.TimedBehaviorSequenceCollector;
@@ -37,6 +38,7 @@ public class IOCContainer {
         ComputerNetInteractionDataCollector computerNetInteractionDataCollector = ComputerNetInteractionDataCollector.getInstance();
         ComputerScreenDataCollector computerScreenDataCollector = ComputerScreenDataCollector.getInstance();
         ComputerProcessDataCollector computerProcessDataCollector = ComputerProcessDataCollector.getInstance();
+        websiteBrowsingDataCollector.setInformationReceiver(new ComputerEnvironment());
         computerScreenDataCollector.setScale(0.5);
         computerProcessDataCollector.setIgnoreList(ignoreList);
         ManualSetRule manualSetRule = ManualSetRule.getInstance();

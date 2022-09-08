@@ -7,6 +7,7 @@ import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
 import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerProcess;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerScreenData;
+import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.WebsiteBrowsingData;
 import pers.juumii.antiaddiction.model.util.FileRelated;
 import pers.juumii.antiaddiction.model.util.Paths;
 
@@ -81,11 +82,20 @@ public class DataListCollector{
     public void updateDataList(){
         try {
             ArrayList<String> ignoreList = new Gson().fromJson(FileUtils.readFileToString(new File(Paths.COMPUTER_PROCESS_IGNORE_LIST_PATH), StandardCharsets.UTF_8),ArrayList.class);
-            for(String processName: ignoreList)
-                environment.getDatum().removeIf(data -> new ComputerProcess(processName).equals(data));
+            for(String s: ignoreList){
+                environment.getDatum().removeIf(data->{
+                    if(data instanceof WebsiteBrowsingData){
+                        System.out.println(((WebsiteBrowsingData)data).getUrl().toString() + ":" + data.getIdCode());
+                        System.out.println(s + ":" + s.hashCode());
+                    }
+                    return data.getIdCode() == s.hashCode();});
+
+
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        FileRelated.toJsonFile(src, this.environment);
     }
 
     public static DataListCollector getInstance(){
