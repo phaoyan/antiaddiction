@@ -12,6 +12,7 @@ import pers.juumii.antiaddiction.model.pattern.PatternList;
 import pers.juumii.antiaddiction.model.pattern.collector.BehaviorPatternCollector;
 import pers.juumii.antiaddiction.model.pattern.collector.TimedBehaviorSequenceCollector;
 import pers.juumii.antiaddiction.model.pattern.collector.UntimedBehaviorSequenceCollector;
+import pers.juumii.antiaddiction.model.pattern.pattern.BehaviorPattern;
 import pers.juumii.antiaddiction.model.translator.EnvironmentToBehaviorTranslator;
 import pers.juumii.antiaddiction.model.translator.MapperRuleManager;
 import pers.juumii.antiaddiction.model.translator.PriorityList;
@@ -45,6 +46,11 @@ public class IOCContainer {
         manualSetRule.readFile();
 
         ComputerEnvironmentDataCollector computerEnvironmentDataCollector = ComputerEnvironmentDataCollector.getInstance();
+        computerEnvironmentDataCollector.setCollectors(new ArrayList<>());
+        computerEnvironmentDataCollector.addCollector(computerProcessDataCollector);
+        computerEnvironmentDataCollector.addCollector(computerScreenDataCollector);
+        computerEnvironmentDataCollector.addCollector(computerNetInteractionDataCollector);
+        computerEnvironmentDataCollector.addCollector(websiteBrowsingDataCollector);
         MapperRuleManager mapperRuleManager = MapperRuleManager.getInstance();
         mapperRuleManager.setBehaviorList(manualSetRule.getMapperBehaviorList());
         PriorityList priorityList = PriorityList.getInstance();
@@ -65,7 +71,6 @@ public class IOCContainer {
         behaviorHistory.readFile();
         TimedBehaviorCollector timedBehaviorCollector = TimedBehaviorCollector.getInstance();
         timedBehaviorCollector.setCollector(momentaryBehaviorCollector);
-        timedBehaviorCollector.setPeriod(120*1000);
 
         BehaviorHistoryCollector behaviorHistoryCollector = BehaviorHistoryCollector.getInstance();
         behaviorHistoryCollector.setHistory(behaviorHistory);
@@ -94,9 +99,21 @@ public class IOCContainer {
         behaviorPatternCollector.setHistory(behaviorHistory);
         behaviorPatternCollector.setPatternList(patternList);
         behaviorPatternCollector.setCollection(new ArrayList<>());
-        behaviorPatternCollector.setUntimedSequenceCollector(untimedSequenceCollector);
-        behaviorPatternCollector.setTimedSequenceCollector(timedSequenceCollector);
+        behaviorPatternCollector.setCollectors(new ArrayList<>());
+        behaviorPatternCollector.addCollector(timedSequenceCollector);
+        behaviorPatternCollector.addCollector(untimedSequenceCollector);
 
+        TimeLine timeLine = new TimeLine(60*1000L);
+        timeLine.addTask(()-> TimedBehaviorCollector.getInstance().collect(), 2);
+        timeLine.addTask(()-> BehaviorHistoryCollector.getInstance().collect(), 2);
+        timeLine.addTask(()-> BehaviorPatternCollector.getInstance().collect(), 2);
+        timeLine.addTask(()-> DataListCollector.getInstance().updateDataList(OverallEnvironmentDataCollector.getInstance().collect()), 5);
+        timeLine.addTask(()->{
+            for(BehaviorPattern pattern: PatternList.getInstance().getPatterns())
+                if(pattern.getHandler() != null)
+                    pattern.getHandler().handle();
+        },2);
+        timeLine.start();
     }
 
     public static void main(String[] args) {

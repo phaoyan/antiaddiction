@@ -27,9 +27,10 @@ public class TimedBehaviorSequenceCollector implements PatternCollector{
         return patternList;
     }
 
-    public ArrayList<TimedBehaviorSequence> collect() {
+    @Override
+    public ArrayList<BehaviorPattern> collect() {
         //从history中分析出patternList中包含的内容
-        ArrayList<TimedBehaviorSequence> res = new ArrayList<>();
+        ArrayList<BehaviorPattern> res = new ArrayList<>();
 
         for(TimedBehaviorSequence pattern: select()){
             for(TimedBehaviorSequence temp: initSequence(getFirst(pattern), pattern.getBehaviorList().size()))

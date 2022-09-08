@@ -2,8 +2,6 @@ package pers.juumii.antiaddiction.model.environment.environment;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import pers.juumii.antiaddiction.exception.NonexistenceException;
 
 
 import java.lang.reflect.InvocationTargetException;
@@ -23,13 +21,6 @@ public abstract class Environment {
     }
     public ArrayList<EnvironmentData> getDatum(){
         return datum;
-    }
-    public EnvironmentData getDataByIdCode(int idCode) throws NonexistenceException {
-        for(EnvironmentData data: datum){
-            if(data.getIdCode() == idCode)
-                return data;
-        }
-        throw new NonexistenceException("The data with idCode: " + idCode + "isn't exist.");
     }
 
     public void setMoment(LocalDateTime moment) {

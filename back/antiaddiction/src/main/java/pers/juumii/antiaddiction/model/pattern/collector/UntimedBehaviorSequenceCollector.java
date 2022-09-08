@@ -26,9 +26,10 @@ public class UntimedBehaviorSequenceCollector implements PatternCollector{
     public ArrayList<BehaviorPattern> getPatternList() {
         return patternList;
     }
-    public ArrayList<UntimedBehaviorSequence> collect() {
+    @Override
+    public ArrayList<BehaviorPattern> collect() {
         //从history中分析出patternList中包含的内容
-        ArrayList<UntimedBehaviorSequence> res = new ArrayList<>();
+        ArrayList<BehaviorPattern> res = new ArrayList<>();
         for(UntimedBehaviorSequence pattern: select()){
             for(UntimedBehaviorSequence temp: initSequence(getFirst(pattern), pattern.getBehaviorList().size()))
                 if(temp.equivalent(pattern))

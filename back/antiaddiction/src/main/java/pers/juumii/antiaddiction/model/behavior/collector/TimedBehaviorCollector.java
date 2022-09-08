@@ -13,14 +13,9 @@ public class TimedBehaviorCollector{
     private static final TimedBehaviorCollector INSTANCE = new TimedBehaviorCollector();
     private MomentaryBehaviorCollector collector;
     private TimedBehavior currentBehavior;
-    private long period;
 
     public void setCollector(MomentaryBehaviorCollector collector) {
         this.collector = collector;
-    }
-
-    public void setPeriod(long period) {
-        this.period = period;
     }
 
     public TimedBehavior getCurrentBehavior() {

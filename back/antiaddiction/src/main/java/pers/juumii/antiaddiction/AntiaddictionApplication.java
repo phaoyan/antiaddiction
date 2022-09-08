@@ -18,17 +18,7 @@ public class AntiaddictionApplication {
 
 	public static void main(String[] args) {
 		IOCContainer.initialize();
-		TimeLine timeLine = new TimeLine(60*1000L);
-		timeLine.addTask(()-> TimedBehaviorCollector.getInstance().collect(), 2);
-		timeLine.addTask(()-> BehaviorHistoryCollector.getInstance().collect(), 2);
-		timeLine.addTask(()-> BehaviorPatternCollector.getInstance().collect(), 2);
-		timeLine.addTask(()-> DataListCollector.getInstance().updateDataList(OverallEnvironmentDataCollector.getInstance().collect()), 5);
-		timeLine.addTask(()->{
-			for(BehaviorPattern pattern: PatternList.getInstance().getPatterns())
-				if(pattern.getHandler() != null)
-					pattern.getHandler().handle();
-		},2);
-		timeLine.start();
+
 		SpringApplicationBuilder builder = new SpringApplicationBuilder(AntiaddictionApplication.class);
 		builder.headless(false).run(args);
 
