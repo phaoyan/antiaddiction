@@ -8,7 +8,7 @@ import pers.juumii.antiaddiction.model.pattern.pattern.UntimedBehaviorSequence;
 
 import java.util.ArrayList;
 
-public class UntimedBehaviorSequenceCollector {
+public class UntimedBehaviorSequenceCollector implements PatternCollector{
     private static final UntimedBehaviorSequenceCollector INSTANCE = new UntimedBehaviorSequenceCollector();
     private BehaviorHistory history;
     private ArrayList<BehaviorPattern> patternList;

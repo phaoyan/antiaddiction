@@ -2,13 +2,12 @@ package pers.juumii.antiaddiction.model.environment.collector;
 
 import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.math3.util.Pair;
 import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
 import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
-import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerProcess;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerScreenData;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.WebsiteBrowsingData;
-import pers.juumii.antiaddiction.model.util.FileRelated;
+import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
+import pers.juumii.antiaddiction.model.util.IOCContainer;
 import pers.juumii.antiaddiction.model.util.Paths;
 
 import java.io.File;
@@ -20,7 +19,6 @@ public class DataListCollector{
 
     private static final DataListCollector INSTANCE = new DataListCollector();
     private OverallEnvironmentDataCollector collector;
-    private long interval;
     private boolean flag;
     private OverallEnvironment environment = new OverallEnvironment();
     private File src;
@@ -32,30 +30,33 @@ public class DataListCollector{
         this.collector = collector;
     }
 
-    public void setInterval(long interval) {
-        this.interval = interval;
-    }
-
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
 
     public void setSrc(File src) {
         this.src = src;
+        if(!src.exists()) {
+            try {
+                src.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-    public void setEnvironment(OverallEnvironment environment) {
-        this.environment = environment == null ? this.environment : environment;
+    public void setEnvironment() {
+        try {
+            OverallEnvironment environment = AdaptedGsonProvider.getGsonWithDeserializeAdapter().fromJson(FileUtils.readFileToString(src, StandardCharsets.UTF_8), OverallEnvironment.class);
+            this.environment = environment == null ? this.environment : environment;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public OverallEnvironmentDataCollector getCollector() {
         return collector;
     }
-
-    public long getInterval() {
-        return interval;
-    }
-
     public boolean isFlag() {
         return flag;
     }
@@ -76,7 +77,12 @@ public class DataListCollector{
         for(EnvironmentData data: environment.getDatum())
             if(!idCodes.contains(data.getIdCode()) && !(data instanceof ComputerScreenData))
                 this.environment.getDatum().add(data);
-        FileRelated.toJsonFile(src, this.environment);
+        try {
+            FileUtils.writeStringToFile(src,AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void updateDataList(){
@@ -89,16 +95,22 @@ public class DataListCollector{
                         System.out.println(s + ":" + s.hashCode());
                     }
                     return data.getIdCode() == s.hashCode();});
-
-
             }
+            FileUtils.writeStringToFile(src,AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        FileRelated.toJsonFile(src, this.environment);
+
     }
 
     public static DataListCollector getInstance(){
         return INSTANCE;
+    }
+
+    public static void main(String[] args) {
+        IOCContainer.initialize();
+        for(EnvironmentData data: DataListCollector.getInstance().getEnvironment().getDatum()){
+            System.out.println(data.getClassName());
+        }
     }
 }

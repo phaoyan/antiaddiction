@@ -9,7 +9,7 @@ import pers.juumii.antiaddiction.model.pattern.pattern.TimedBehaviorSequence;
 
 import java.util.ArrayList;
 
-public class TimedBehaviorSequenceCollector {
+public class TimedBehaviorSequenceCollector implements PatternCollector{
     private static final TimedBehaviorSequenceCollector INSTANCE = new TimedBehaviorSequenceCollector();
 
     private BehaviorHistory history;

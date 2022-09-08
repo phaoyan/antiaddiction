@@ -16,8 +16,6 @@ req.onload = ()=>{
             // console.log("success")
         } 
         // console.log("test")
-
-
     }
 
 }

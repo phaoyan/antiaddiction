@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class ComputerScreenDataCollector implements DataCollector{
+public class ComputerScreenDataCollector implements ComputerDataCollector{
     private static final ComputerScreenDataCollector INSTANCE = new ComputerScreenDataCollector();
 
     private double scale = 1;

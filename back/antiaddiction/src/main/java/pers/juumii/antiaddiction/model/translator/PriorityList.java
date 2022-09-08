@@ -1,6 +1,5 @@
 package pers.juumii.antiaddiction.model.translator;
 
-
 import pers.juumii.antiaddiction.model.behavior.MomentaryBehavior;
 
 import java.util.ArrayList;

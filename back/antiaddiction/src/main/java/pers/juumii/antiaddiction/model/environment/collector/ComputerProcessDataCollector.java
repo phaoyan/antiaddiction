@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ComputerProcessDataCollector implements DataCollector{
+public class ComputerProcessDataCollector implements ComputerDataCollector{
 
     private static final ComputerProcessDataCollector INSTANCE = new ComputerProcessDataCollector();
 
@@ -93,11 +93,11 @@ public class ComputerProcessDataCollector implements DataCollector{
             if(concernList !=null && !concernList.contains(processName))
                 continue;
 
-            String formatInteger = "";
+            StringBuilder formatInteger = new StringBuilder();
             for(String sub: split[split.length - 2].split(",")){
-                formatInteger = formatInteger + sub;
+                formatInteger.append(sub);
             }
-            int memoryUsage = Integer.parseInt(formatInteger.equals("") ? "-1": formatInteger);
+            int memoryUsage = Integer.parseInt(formatInteger.toString().equals("") ? "-1": formatInteger.toString());
 
             for(Pair<String, Integer> detail: processDetailList){
                 if(detail.getFirst().equals(processName))

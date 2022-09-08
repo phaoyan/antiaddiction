@@ -7,7 +7,6 @@ import pers.juumii.antiaddiction.model.behavior.collector.BehaviorHistoryCollect
 import pers.juumii.antiaddiction.model.behavior.collector.MomentaryBehaviorCollector;
 import pers.juumii.antiaddiction.model.behavior.collector.TimedBehaviorCollector;
 import pers.juumii.antiaddiction.model.environment.collector.*;
-import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerEnvironment;
 import pers.juumii.antiaddiction.model.pattern.PatternList;
 import pers.juumii.antiaddiction.model.pattern.collector.BehaviorPatternCollector;
@@ -46,10 +45,6 @@ public class IOCContainer {
         manualSetRule.readFile();
 
         ComputerEnvironmentDataCollector computerEnvironmentDataCollector = ComputerEnvironmentDataCollector.getInstance();
-        computerEnvironmentDataCollector.setNetDataCollector(computerNetInteractionDataCollector);
-        computerEnvironmentDataCollector.setProcessDataCollector(computerProcessDataCollector);
-        computerEnvironmentDataCollector.setScreenDataCollector(computerScreenDataCollector);
-        computerEnvironmentDataCollector.setWebsiteBrowsingDataCollector(websiteBrowsingDataCollector);
         MapperRuleManager mapperRuleManager = MapperRuleManager.getInstance();
         mapperRuleManager.setBehaviorList(manualSetRule.getMapperBehaviorList());
         PriorityList priorityList = PriorityList.getInstance();
@@ -65,11 +60,9 @@ public class IOCContainer {
         momentaryBehaviorCollector.setCollector(overallEnvironmentDataCollector);
         momentaryBehaviorCollector.setTranslator(translator);
 
-        BehaviorHistory behaviorHistory = FileRelated.readJsonFile(new File(Paths.HISTORY_PATH + "/" +LocalDate.now() + ".json"), BehaviorHistory.class);
-        if(behaviorHistory == null || behaviorHistory.getHistory() == null){
-            behaviorHistory = new BehaviorHistory();
-            behaviorHistory.setHistory(new ArrayList<>());
-        }
+        BehaviorHistory behaviorHistory = new BehaviorHistory();
+        behaviorHistory.setSrc(Paths.HISTORY_PATH + "/" +LocalDate.now() + ".json");
+        behaviorHistory.readFile();
         TimedBehaviorCollector timedBehaviorCollector = TimedBehaviorCollector.getInstance();
         timedBehaviorCollector.setCollector(momentaryBehaviorCollector);
         timedBehaviorCollector.setPeriod(120*1000);
@@ -81,9 +74,8 @@ public class IOCContainer {
         //data list
         DataListCollector dataListCollector = DataListCollector.getInstance();
         dataListCollector.setFlag(true);
-        dataListCollector.setInterval(120*1000);
         dataListCollector.setSrc(new File(Paths.DATA_LIST_PATH));
-        dataListCollector.setEnvironment(FileRelated.readJsonFile(dataListCollector.getSrc(), OverallEnvironment.class));
+        dataListCollector.setEnvironment();
         dataListCollector.setCollector(overallEnvironmentDataCollector);
 
         //pattern list
@@ -99,12 +91,15 @@ public class IOCContainer {
 
         BehaviorPatternCollector behaviorPatternCollector = BehaviorPatternCollector.getInstance();
         behaviorPatternCollector.setFlag(true);
-        behaviorPatternCollector.setInterval(120*1000);
         behaviorPatternCollector.setHistory(behaviorHistory);
         behaviorPatternCollector.setPatternList(patternList);
         behaviorPatternCollector.setCollection(new ArrayList<>());
         behaviorPatternCollector.setUntimedSequenceCollector(untimedSequenceCollector);
         behaviorPatternCollector.setTimedSequenceCollector(timedSequenceCollector);
+
+    }
+
+    public static void main(String[] args) {
 
     }
 

@@ -1,11 +1,15 @@
 package pers.juumii.antiaddiction.model.pattern.collector;
 
 
+import org.reflections.Reflections;
 import pers.juumii.antiaddiction.model.behavior.BehaviorHistory;
 import pers.juumii.antiaddiction.model.pattern.PatternList;
 import pers.juumii.antiaddiction.model.pattern.pattern.BehaviorPattern;
+import pers.juumii.antiaddiction.model.util.IOCContainer;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class BehaviorPatternCollector{
 
@@ -16,7 +20,6 @@ public class BehaviorPatternCollector{
     private UntimedBehaviorSequenceCollector untimedSequenceCollector;
     private TimedBehaviorSequenceCollector timedSequenceCollector;
     private ArrayList<BehaviorPattern> collection;
-    private long interval;
     private boolean flag;
     public PatternList getPatternList() {
         return patternList;
@@ -43,12 +46,6 @@ public class BehaviorPatternCollector{
     public void setHistory(BehaviorHistory history) {
         this.history = history;
     }
-    public long getInterval() {
-        return interval;
-    }
-    public void setInterval(long interval) {
-        this.interval = interval;
-    }
     public boolean isFlag() {
         return flag;
     }
@@ -64,15 +61,29 @@ public class BehaviorPatternCollector{
     }
 
     public void collect(){
-
-
         collection.clear();
-        collection.addAll(untimedSequenceCollector.collect());
-        collection.addAll(timedSequenceCollector.collect());
+
+        Reflections reflections = new Reflections(PatternCollector.class.getPackage().getName());
+        Set<Class<? extends PatternCollector>> classes = reflections.getSubTypesOf(PatternCollector.class);
+        for(Class<? extends  PatternCollector> cl: classes){
+            try {
+                collection.addAll((ArrayList<? extends BehaviorPattern>)cl.getMethod("collect").invoke(cl.getMethod("getInstance").invoke(null)));
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
 
     public static BehaviorPatternCollector getInstance(){
         return INSTANCE;
+    }
+
+    public static void main(String[] args) {
+        IOCContainer.initialize();
+        BehaviorPatternCollector.getInstance().collect();
+        BehaviorPatternCollector.getInstance().collection.forEach((pattern)-> System.out.println(pattern.getPatternType()));
+
     }
 }

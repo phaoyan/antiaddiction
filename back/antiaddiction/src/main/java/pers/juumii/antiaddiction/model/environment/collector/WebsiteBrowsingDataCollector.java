@@ -6,9 +6,8 @@ import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.Com
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.WebsiteBrowsingData;
 
 import java.net.URL;
-import java.util.ArrayList;
 
-public class WebsiteBrowsingDataCollector implements DataCollector{
+public class WebsiteBrowsingDataCollector implements ComputerDataCollector{
 
     private static final WebsiteBrowsingDataCollector INSTANCE = new WebsiteBrowsingDataCollector();
 
