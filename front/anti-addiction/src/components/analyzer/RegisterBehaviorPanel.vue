@@ -20,7 +20,10 @@ const confirm = async ()=>{
     datumTable.value.clearSelection()
     behaviorList.value.push({
         name:"undefined",
-        environment:selectedDatumList.value
+        overallEnvironment:{
+            moment:"1000-01-01 01:01:01",
+            datum:selectedDatumList.value
+        }
     })
     postBehaviorList()
 }
@@ -77,8 +80,10 @@ const move = (index,direction)=>{
 
 const display = (data)=>{
     if(data.processName != undefined){
+        // console.log(data.processName)
         return data.processName
     }else if(data.url != undefined){
+        // console.log(data.url)
         return data.url
     }
 }
@@ -137,7 +142,7 @@ init()
                         <template v-slot="scope">
                             <el-collapse>
                                 <el-collapse-item :title="behaviorList[scope.$index].name">
-                                    <template v-for="data in behaviorList[scope.$index].environment" :key="data">
+                                    <template v-for="data in behaviorList[scope.$index].overallEnvironment.datum" :key="data">
                                         <div class = "data-display">&nbsp;&nbsp;&nbsp;{{display(data)}}</div>
                                     </template>
                                     <div class="delete-row">

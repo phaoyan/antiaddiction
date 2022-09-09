@@ -1,36 +1,20 @@
 package pers.juumii.antiaddiction.model.translator;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.behavior.MomentaryBehavior;
 import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
 
+@Service
 public class EnvironmentToBehaviorTranslator {
 
-    private static final EnvironmentToBehaviorTranslator INSTANCE = new EnvironmentToBehaviorTranslator();
+    @Autowired
     private MapperRuleManager rule;
+    @Autowired
     private  PriorityList priorityList;
-
-    public MapperRuleManager getRule() {
-        return rule;
-    }
-
-    public void setRule(MapperRuleManager rule) {
-        this.rule = rule;
-    }
-
-    public PriorityList getPriorityList() {
-        return priorityList;
-    }
-
-    public void setPriorityList(PriorityList priorityList) {
-        this.priorityList = priorityList;
-    }
-
     public MomentaryBehavior translate(OverallEnvironment overallEnvironment){
         return priorityList.pick(rule.map(overallEnvironment));
     }
 
-    public static EnvironmentToBehaviorTranslator getInstance(){
-        return INSTANCE;
-    }
 }

@@ -3,23 +3,29 @@ package pers.juumii.antiaddiction.model.pattern;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import pers.juumii.antiaddiction.model.pattern.handler.BehaviorHandler;
 import pers.juumii.antiaddiction.model.pattern.pattern.BehaviorPattern;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 
+@Repository
 public class PatternList {
-    private static final PatternList INSTANCE = new PatternList();
     private ArrayList<BehaviorPattern> patterns;
-    private File src;
+    @Value("${patternListSrc}")
+    private String src;
+
+    @PostConstruct
+    public void init(){
+        readFile();
+    }
     public void setPatterns(ArrayList<BehaviorPattern> patterns) {
         this.patterns = patterns;
     }
@@ -61,17 +67,14 @@ public class PatternList {
         return res;
     }
 
-    public File getSrc() {
-        return src;
-    }
 
-    public void setSrc(File src) {
+    public void setSrc(String src) {
         this.src = src;
     }
 
     public void readFile(){
         try {
-            JsonArray json = new Gson().fromJson(FileUtils.readFileToString(src, StandardCharsets.UTF_8), JsonArray.class);
+            JsonArray json = new Gson().fromJson(FileUtils.readFileToString(new File(src), StandardCharsets.UTF_8), JsonArray.class);
             patterns = new ArrayList<>();
             setPatterns(json);
 
@@ -84,13 +87,10 @@ public class PatternList {
 
     public void toFile(){
         try {
-            FileUtils.writeStringToFile(src, AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(patterns), StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(src), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(patterns), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static PatternList getInstance(){
-        return INSTANCE;
-    }
 }

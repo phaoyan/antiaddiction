@@ -5,26 +5,37 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+@Repository
 public class BehaviorHistory{
     private ArrayList<TimedBehavior> history;
     private LocalDateTime startTime, endTime;
-    private String src;
+    @Value("${behaviorHistoryRoot}")
+    private String root;
+
+    @PostConstruct
+    public void init(){
+        readFile();
+    }
 
     public void readFile(){
-        if(src == null)
-            return;
-        File srcFile = new File(src);
         try {
+            File src = new File(root + "/"  + LocalDate.now() + ".json");
+            if(!src.exists())
+                src.createNewFile();
             Gson gson = AdaptedGsonProvider.getGsonWithDeserializeAdapter();
-            JsonObject json = gson.fromJson(FileUtils.readFileToString(srcFile, StandardCharsets.UTF_8), JsonObject.class);
+            JsonObject json = gson.fromJson(FileUtils.readFileToString(src, StandardCharsets.UTF_8), JsonObject.class);
             if(json == null){
                 startTime = LocalDateTime.now();
                 endTime = startTime;
@@ -41,49 +52,19 @@ public class BehaviorHistory{
             throw new RuntimeException(e);
         }
     }
-
     public void toFile(){
         try {
-            FileUtils.writeStringToFile(new File(src), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this), StandardCharsets.UTF_8);
+            System.out.println();
+            FileUtils.writeStringToFile(new File(root + "/"  + LocalDate.now() + ".json"), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
-    }
-
-    public void setHistory(ArrayList<TimedBehavior> history) {
-        this.history = history;
-    }
-    public ArrayList<TimedBehavior> getHistory() {
-        return history;
-    }
-    public String getSrc() {
-        return src;
-    }
-    public void setSrc(String src) {
-        this.src = src;
-        File srcFile = new File(src);
-        if(!srcFile.exists()) {
-            try {
-                srcFile.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
     public void append(TimedBehavior behavior){
@@ -98,13 +79,13 @@ public class BehaviorHistory{
         update();
     }
 
-    private void updateTime(){
+    public void update(){
         setStartTime(history.get(0).getStartTime());
         setEndTime(history.get(history.size() - 1).getEndTime());
+        toFile();
     }
 
-    public void update(){
-        updateTime();
-        toFile();
+    public ArrayList<TimedBehavior> getHistory() {
+        return history;
     }
 }

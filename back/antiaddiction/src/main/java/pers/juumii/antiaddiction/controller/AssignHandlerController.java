@@ -3,17 +3,36 @@ package pers.juumii.antiaddiction.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.juumii.antiaddiction.model.pattern.PatternList;
 import pers.juumii.antiaddiction.model.pattern.handler.BehaviorHandler;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 
-import java.awt.*;
+import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 
+@CrossOrigin
 @RestController
-public class AssignHandlerController extends CORSController{
-
+public class AssignHandlerController {
+    private static AssignHandlerController first;
+    public static boolean isFirst(AssignHandlerController target){
+        if(first == null){
+            first = target;
+            return true;
+        }
+        return first == target;
+    }
+    public static void pointToFirst(AssignHandlerController target){
+        target.patternList = first.patternList;
+    }
+    @PostConstruct
+    public void init(){
+        if(!isFirst(this))
+            pointToFirst(this);
+    }
+    @Autowired
+    private PatternList patternList;
     @GetMapping("/handler/original")
     public String getHandlerOriginal(@RequestParam String simplifiedName) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Reflections reflections = new Reflections(BehaviorHandler.class.getPackage().getName());
@@ -36,7 +55,7 @@ public class AssignHandlerController extends CORSController{
         JsonObject json = gson.fromJson(jsonString, JsonObject.class);
         int index = json.get("index").getAsInt();
         BehaviorHandler handler = gson.fromJson(json.get("handler").getAsJsonObject(), BehaviorHandler.class);
-        PatternList.getInstance().setHandler(index, handler);
+        patternList.setHandler(index, handler);
 
     }
 

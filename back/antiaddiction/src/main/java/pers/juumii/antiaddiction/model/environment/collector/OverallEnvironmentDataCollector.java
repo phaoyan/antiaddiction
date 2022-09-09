@@ -1,27 +1,16 @@
 package pers.juumii.antiaddiction.model.environment.collector;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
 
-import java.util.ArrayList;
-
+@Service
 public class OverallEnvironmentDataCollector implements DataCollector{
-    private static final OverallEnvironmentDataCollector INSTANCE = new OverallEnvironmentDataCollector();
+    @Autowired
     private ComputerEnvironmentDataCollector ceCollector;
-    private ArrayList<String> ignoreList;
-
-    public void setCeCollector(ComputerEnvironmentDataCollector ceCollector) {
-        this.ceCollector = ceCollector;
-    }
-
-    public ArrayList<String> getIgnoreList() {
-        return ignoreList;
-    }
-
-    public void setIgnoreList(ArrayList<String> ignoreList) {
-        this.ignoreList = ignoreList;
-    }
-
+    @Autowired
+    private IgnoreList ignoreList;
     @Override
     public OverallEnvironment collect() {
         OverallEnvironment res = new OverallEnvironment();
@@ -35,11 +24,8 @@ public class OverallEnvironmentDataCollector implements DataCollector{
     private void ignore(OverallEnvironment env) {
         if(ignoreList == null)
             return;
-        for(String s: ignoreList)
+        for(String s: ignoreList.getIgnoreList())
             env.getDatum().removeIf(data->data.getIdCode() == s.hashCode());
     }
 
-    public static OverallEnvironmentDataCollector getInstance() {
-        return INSTANCE;
-    }
 }

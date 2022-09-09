@@ -1,74 +1,59 @@
 package pers.juumii.antiaddiction.model.environment.collector;
 
-import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
 import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerScreenData;
-import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.WebsiteBrowsingData;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
-import pers.juumii.antiaddiction.model.util.IOCContainer;
-import pers.juumii.antiaddiction.model.util.Paths;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+@Service
 public class DataListCollector{
 
-    private static final DataListCollector INSTANCE = new DataListCollector();
+
+    @Autowired
     private OverallEnvironmentDataCollector collector;
-    private boolean flag;
-    private OverallEnvironment environment = new OverallEnvironment();
-    private File src;
+    private OverallEnvironment environment;
+    @Autowired
+    IgnoreList ignoreList;
+    @Value("${dataListSrc}")
+    private String src;
 
     private DataListCollector(){}
 
-
-    public void setCollector(OverallEnvironmentDataCollector collector) {
-        this.collector = collector;
-    }
-
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
-
-    public void setSrc(File src) {
-        this.src = src;
-        if(!src.exists()) {
-            try {
+    @PostConstruct
+    public void init(){
+        try {
+            File src = new File(this.src);
+            if(!src.exists()) {
                 src.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
+            setEnvironment();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     public void setEnvironment() {
         try {
-            OverallEnvironment environment = AdaptedGsonProvider.getGsonWithDeserializeAdapter().fromJson(FileUtils.readFileToString(src, StandardCharsets.UTF_8), OverallEnvironment.class);
+            OverallEnvironment environment = AdaptedGsonProvider.getGsonWithDeserializeAdapter().fromJson(FileUtils.readFileToString(new File(src), StandardCharsets.UTF_8), OverallEnvironment.class);
             this.environment = environment == null ? this.environment : environment;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-    public OverallEnvironmentDataCollector getCollector() {
-        return collector;
-    }
-    public boolean isFlag() {
-        return flag;
-    }
-
     public OverallEnvironment getEnvironment() {
         return environment;
     }
-
-    public File getSrc() {
-        return src;
-    }
-
     public void updateDataList(OverallEnvironment environment) {
         ArrayList<Integer> idCodes = new ArrayList<>();
         for(EnvironmentData data: this.environment.getDatum()){
@@ -78,39 +63,24 @@ public class DataListCollector{
             if(!idCodes.contains(data.getIdCode()) && !(data instanceof ComputerScreenData))
                 this.environment.getDatum().add(data);
         try {
-            FileUtils.writeStringToFile(src,AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(src),AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
     }
+
 
     public void updateDataList(){
         try {
-            ArrayList<String> ignoreList = new Gson().fromJson(FileUtils.readFileToString(new File(Paths.COMPUTER_PROCESS_IGNORE_LIST_PATH), StandardCharsets.UTF_8),ArrayList.class);
-            for(String s: ignoreList){
-                environment.getDatum().removeIf(data->{
-                    if(data instanceof WebsiteBrowsingData){
-                        System.out.println(((WebsiteBrowsingData)data).getUrl().toString() + ":" + data.getIdCode());
-                        System.out.println(s + ":" + s.hashCode());
-                    }
-                    return data.getIdCode() == s.hashCode();});
+            for(String s: ignoreList.getIgnoreList()){
+                environment.getDatum().removeIf(data-> data.getIdCode() == s.hashCode());
             }
-            FileUtils.writeStringToFile(src,AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(src),AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    public static DataListCollector getInstance(){
-        return INSTANCE;
-    }
-
-    public static void main(String[] args) {
-        IOCContainer.initialize();
-        for(EnvironmentData data: DataListCollector.getInstance().getEnvironment().getDatum()){
-            System.out.println(data.getClassName());
-        }
-    }
 }

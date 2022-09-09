@@ -2,21 +2,17 @@ package pers.juumii.antiaddiction.model.behavior.collector;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.behavior.MomentaryBehavior;
 import pers.juumii.antiaddiction.model.behavior.TimedBehavior;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-
+@Service
 public class TimedBehaviorCollector{
 
-    private static final TimedBehaviorCollector INSTANCE = new TimedBehaviorCollector();
+    @Autowired
     private MomentaryBehaviorCollector collector;
     private TimedBehavior currentBehavior;
-
-    public void setCollector(MomentaryBehaviorCollector collector) {
-        this.collector = collector;
-    }
 
     public TimedBehavior getCurrentBehavior() {
         return currentBehavior;
@@ -33,7 +29,4 @@ public class TimedBehaviorCollector{
         }
     }
 
-    public static TimedBehaviorCollector getInstance(){
-        return INSTANCE;
-    }
 }

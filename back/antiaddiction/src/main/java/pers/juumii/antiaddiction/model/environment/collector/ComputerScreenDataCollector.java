@@ -1,9 +1,10 @@
 package pers.juumii.antiaddiction.model.environment.collector;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.environment.environment.Environment;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerEnvironment;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerScreenData;
-import pers.juumii.antiaddiction.model.util.Paths;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,26 +12,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-
+@Service
 public class ComputerScreenDataCollector implements ComputerDataCollector{
-    private static final ComputerScreenDataCollector INSTANCE = new ComputerScreenDataCollector();
 
-    private double scale = 1;
+    @Value("${computerScreenShotScale}")
+    private double scale;
+    @Value("${ABSOLUTE_PREFIX}")
+    private String ABSOLUTE_PREFIX;
+    @Value("${screenSrc}")
+    private String screenSrc;
     private ComputerScreenDataCollector(){}
-
-    public double getScale() {
-        return scale;
-    }
-
-    public void setScale(double scale) {
-        this.scale = scale;
-    }
-
     @Override
     public Environment collect() {
         try {
             ComputerEnvironment res = new ComputerEnvironment();
-            File src = new File(Paths.ABSOLUTE_PREFIX + Paths.SCREEN_PATH + "/" + LocalDateTime.now().toString().split("\\.")[0].replace(':','-') + ".jpg");
+            File src = new File(ABSOLUTE_PREFIX + screenSrc + "/" + LocalDateTime.now().toString().split("\\.")[0].replace(':','-') + ".jpg");
             if(!src.exists())
                 src.createNewFile();
             ComputerScreenData data = new ComputerScreenData(src.toString());
@@ -45,20 +41,9 @@ public class ComputerScreenDataCollector implements ComputerDataCollector{
 
             res.mount(data);
             return res;
-        } catch (AWTException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (AWTException | IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static ComputerScreenDataCollector getInstance() {
-        return INSTANCE;
-    }
-
-    public static void main(String[] args) {
-        ComputerScreenDataCollector.getInstance().collect();
-
     }
 
 }
