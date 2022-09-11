@@ -22,7 +22,7 @@ public class DataListCollector{
 
     @Autowired
     private OverallEnvironmentDataCollector collector;
-    private OverallEnvironment environment;
+    private OverallEnvironment environment = new OverallEnvironment();
     @Autowired
     IgnoreList ignoreList;
     @Autowired

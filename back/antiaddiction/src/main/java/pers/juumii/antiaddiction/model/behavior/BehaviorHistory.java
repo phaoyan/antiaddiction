@@ -56,7 +56,6 @@ public class BehaviorHistory{
     }
     public void toFile(){
         try {
-            System.out.println();
             FileUtils.writeStringToFile(new File(paths.getBehaviorHistoryRoot() + "/"  + LocalDate.now() + ".json"), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);

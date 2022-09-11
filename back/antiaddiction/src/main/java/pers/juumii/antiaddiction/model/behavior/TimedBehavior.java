@@ -27,6 +27,15 @@ public class TimedBehavior{
     public ArrayList<MomentaryBehavior> getDetails() {
         return details;
     }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
     public boolean append(MomentaryBehavior behavior){
         boolean res;
         if(this.details.size() == 0){

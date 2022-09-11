@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 import pers.juumii.antiaddiction.model.util.Paths;
@@ -41,5 +40,14 @@ public class IgnoreList {
     }
     public void addIgnore(String item){
         ignoreList.add(item);
+        toFile();
+    }
+
+    private void toFile() {
+        try {
+            FileUtils.writeStringToFile(new File(paths.getIgnoreListSrc()),AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(ignoreList), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -9,7 +9,7 @@ import pers.juumii.antiaddiction.model.pattern.pattern.BehaviorPattern;
 public class OverallHandler {
 
     @Autowired
-    PatternList patternList;
+    private PatternList patternList;
 
     public void handle(){
         for(BehaviorPattern pattern: patternList.getPatterns())

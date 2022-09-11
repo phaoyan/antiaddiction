@@ -18,7 +18,7 @@ public class WebsiteBrowsingDataCollector implements ComputerDataCollector{
     public void addBrowsingData(URL url){
         informationReceiver.getDatum().add(new WebsiteBrowsingData(url));
     }
-    public void removeBrowsingData(URL url){
+    public synchronized void removeBrowsingData(URL url){
         informationReceiver.getDatum().removeIf(data->((WebsiteBrowsingData)data).getUrl().equals(url));
     }
     @Override

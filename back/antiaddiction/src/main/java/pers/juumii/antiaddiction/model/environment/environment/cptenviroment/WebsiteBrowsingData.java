@@ -9,17 +9,19 @@ public class WebsiteBrowsingData implements ComputerEnvironmentData{
 
     public final String className = getClass().getName();
 
-    public URL url;
+    private URL url;
+    @SuppressWarnings("all")
+    private String urlWithoutParams;
 
     public WebsiteBrowsingData(){}
     public WebsiteBrowsingData(URL url){
-        this.url = url;
+        setUrl(url);
     }
     public WebsiteBrowsingData(JsonElement json) throws MalformedURLException {
         if(json.getAsJsonObject().get("url") == null)
             return;
 
-        this.url = new URL(json.getAsJsonObject().get("url").getAsString());
+        setUrl(new URL(json.getAsJsonObject().get("url").getAsString()));
     }
 
     public URL getUrl() {
@@ -28,7 +30,9 @@ public class WebsiteBrowsingData implements ComputerEnvironmentData{
 
     public void setUrl(URL url) {
         this.url = url;
+        this.urlWithoutParams = url.toString().split("\\?")[0];
     }
+
 
     @Override
     public int getIdCode() {
