@@ -31,14 +31,14 @@ const confirm = async ()=>{
 const deleteDatum = async()=>{
     for(let i = 0; i < selectedDatumList.value.length; i ++){
         if(selectedDatumList.value[i].processName != null){
-            await axios.post("http://localhost:8080/processData/ignoreList",selectedDatumList.value[i].processName,{    
+            await axios.post("http://localhost:8080/ignoreList",selectedDatumList.value[i].processName,{    
                 headers: {
                     'Content-Type':'application/json'
                 }
             })
         }
         if(selectedDatumList.value[i].url != null){
-            await axios.post("http://localhost:8080/processData/ignoreList",selectedDatumList.value[i].url,{    
+            await axios.post("http://localhost:8080/ignoreList",selectedDatumList.value[i].url,{    
                 headers: {
                     'Content-Type':'application/json'
                 }
@@ -84,7 +84,7 @@ const display = (data)=>{
         return data.processName
     }else if(data.url != undefined){
         // console.log(data.url)
-        return data.url
+        return data.urlWithoutParams
     }
 }
 

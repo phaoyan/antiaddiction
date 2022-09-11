@@ -15,7 +15,7 @@ const emit = defineEmits(['changeDisplay'])
             <div v-for="data in momentary.overallEnvironment.datum" :key="data">
                 <p class="item">
                     {{data.processName}}
-                    <a>{{data.url}}</a>
+                    <a>{{data.urlWithoutParams}}</a>
                 </p>
             </div>
         </div>
