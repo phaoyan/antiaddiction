@@ -5,9 +5,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
+import pers.juumii.antiaddiction.model.util.Paths;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -21,8 +23,8 @@ import java.util.ArrayList;
 public class BehaviorHistory{
     private ArrayList<TimedBehavior> history;
     private LocalDateTime startTime, endTime;
-    @Value("${behaviorHistoryRoot}")
-    private String root;
+    @Autowired
+    private Paths paths;
 
     @PostConstruct
     public void init(){
@@ -31,7 +33,7 @@ public class BehaviorHistory{
 
     public void readFile(){
         try {
-            File src = new File(root + "/"  + LocalDate.now() + ".json");
+            File src = new File(paths.getBehaviorHistoryRoot() + "/"  + LocalDate.now() + ".json");
             if(!src.exists())
                 src.createNewFile();
             Gson gson = AdaptedGsonProvider.getGsonWithDeserializeAdapter();
@@ -55,7 +57,7 @@ public class BehaviorHistory{
     public void toFile(){
         try {
             System.out.println();
-            FileUtils.writeStringToFile(new File(root + "/"  + LocalDate.now() + ".json"), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this), StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(paths.getBehaviorHistoryRoot() + "/"  + LocalDate.now() + ".json"), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

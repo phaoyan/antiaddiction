@@ -1,7 +1,9 @@
 package pers.juumii.antiaddiction.model.util;
 
 import org.apache.commons.math3.util.Pair;
+import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -30,6 +32,7 @@ public class TimeLine extends Thread{
 
     @Override
     public void run() {
+        System.out.println(new File("").getAbsolutePath());
         long counter = 0;
         while(flag){
 

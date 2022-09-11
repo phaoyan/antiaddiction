@@ -3,12 +3,14 @@ package pers.juumii.antiaddiction.model.translator.mapperrule;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.behavior.MomentaryBehavior;
 import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
 import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
+import pers.juumii.antiaddiction.model.util.Paths;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -21,14 +23,14 @@ import java.util.ArrayList;
 @Service
 public class ManualSetRule implements MapperRule{
 
-    @Value("${manualSetRuleSrc}")
-    private String src;
+    @Autowired
+    private Paths paths;
     private ArrayList<MomentaryBehavior> mapperBehaviorList;
 
     @PostConstruct
     public void init(){
         try {
-            File src = new File(this.src);
+            File src = new File(paths.getManualSetRuleSrc());
             if(!src.exists())
                 src.createNewFile();
             mapperBehaviorList = new ArrayList<>();
@@ -43,7 +45,7 @@ public class ManualSetRule implements MapperRule{
     }
 
     public void toFile(){
-        File src = new File(this.src);
+        File src = new File(paths.getManualSetRuleSrc());
         try {
             FileUtils.writeStringToFile(src, AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(mapperBehaviorList), StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -85,9 +87,6 @@ public class ManualSetRule implements MapperRule{
             }
         }
         return res;
-    }
-    public void setSrc(String src) {
-        this.src = src;
     }
 
     @Override

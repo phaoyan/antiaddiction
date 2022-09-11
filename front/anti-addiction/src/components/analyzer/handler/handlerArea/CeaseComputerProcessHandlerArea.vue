@@ -13,7 +13,6 @@ const patternData = patternList.value[prop.index]
 const deleteHandler = async ()=>{
     patternList.value[prop.index].handler = null
     await axios.post("http://localhost:8080/patternList",patternList.value)
-
 }
 
 </script>

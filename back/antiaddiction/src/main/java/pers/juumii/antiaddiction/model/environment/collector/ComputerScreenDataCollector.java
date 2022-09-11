@@ -1,10 +1,12 @@
 package pers.juumii.antiaddiction.model.environment.collector;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.environment.environment.Environment;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerEnvironment;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerScreenData;
+import pers.juumii.antiaddiction.model.util.Paths;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -17,16 +19,14 @@ public class ComputerScreenDataCollector implements ComputerDataCollector{
 
     @Value("${computerScreenShotScale}")
     private double scale;
-    @Value("${ABSOLUTE_PREFIX}")
-    private String ABSOLUTE_PREFIX;
-    @Value("${screenSrc}")
-    private String screenSrc;
+    @Autowired
+    private Paths paths;
     private ComputerScreenDataCollector(){}
     @Override
     public Environment collect() {
         try {
             ComputerEnvironment res = new ComputerEnvironment();
-            File src = new File(ABSOLUTE_PREFIX + screenSrc + "/" + LocalDateTime.now().toString().split("\\.")[0].replace(':','-') + ".jpg");
+            File src = new File(paths.getScreenSrc() + "/" + LocalDateTime.now().toString().split("\\.")[0].replace(':','-') + ".jpg");
             if(!src.exists())
                 src.createNewFile();
             ComputerScreenData data = new ComputerScreenData(src.toString());

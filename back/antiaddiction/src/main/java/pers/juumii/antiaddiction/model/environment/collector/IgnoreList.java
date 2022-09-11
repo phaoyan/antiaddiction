@@ -3,9 +3,11 @@ package pers.juumii.antiaddiction.model.environment.collector;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
+import pers.juumii.antiaddiction.model.util.Paths;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -17,15 +19,15 @@ import java.util.List;
 @Repository
 public class IgnoreList {
 
-    @Value("${ignoreListSrc}")
-    private String src;
+    @Autowired
+    private Paths paths;
     private List<String> ignoreList;
 
     @PostConstruct
     public void init(){
         try {
             ignoreList = new ArrayList<>();
-            File src = new File(this.src);
+            File src = new File(paths.getIgnoreListSrc());
             JsonArray ignoreItems = AdaptedGsonProvider.getGsonWithDeserializeAdapter().fromJson(FileUtils.readFileToString(src, StandardCharsets.UTF_8), JsonArray.class);
             for(JsonElement item: ignoreItems)
                 ignoreList.add(item.getAsString());

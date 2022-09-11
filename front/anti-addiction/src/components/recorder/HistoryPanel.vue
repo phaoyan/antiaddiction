@@ -38,14 +38,14 @@ init()
 
 <template>
     <el-icon class="icon-button refresh" @click = "init()"><RefreshRight /></el-icon>
-    <div class="box" v-for="(timedBehavior, index) in behaviorList" :key="timedBehavior">
+    <div class="box" v-for="timedBehavior in behaviorList" :key="timedBehavior">
         <brief-area :behavior="timedBehavior" 
             v-if="timedBehavior.display === 'brief'" 
             @changeDisplay="(mode)=>{timedBehavior.display = mode}"/>
-        <image-area :behavior="timedBehavior" :index="index"
+        <image-area :behavior="timedBehavior"
             v-if="timedBehavior.display === 'image'" 
             @changeDisplay="(mode)=>{timedBehavior.display = mode}"/>
-        <process-datum-area :behavior="timedBehavior" :index="index"
+        <process-datum-area :behavior="timedBehavior"
             v-if="timedBehavior.display === 'process'" 
             @changeDisplay="(mode)=>{timedBehavior.display = mode}"/>
     </div>

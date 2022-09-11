@@ -4,26 +4,22 @@ import HomePanel from "./HomePanel.vue"
 import RecorderPanel from "./recorder/RecorderPanel.vue"
 import AnalyzerPanel from "./analyzer/AnalyzerPanel.vue"
     
-let id = 0
 const items = ref([
     {
-        index: id++,
         title:"home"
     },
     {
-        index: id++,
         title:"recorder"
     },
     {
-        index: id++,
         title:"analyzer"
     }
 ])
-const mode = ref(1)
+const mode = ref("home")
 
 
-function changePage(title, index){
-    mode.value = index
+function changePage(title){
+    mode.value = title
 }
     
 </script>
@@ -31,14 +27,14 @@ function changePage(title, index){
 <template>
     <div id="header">
         <ul id="item-bar">
-            <li v-for="item in items" :key="item.index" id="item" @click="changePage(item.title, item.index)">
+            <li v-for="item in items" :key="item" id="item" @click="changePage(item.title)">
                 {{item.title}}
             </li>
         </ul>
     </div>
-    <home-panel v-if=" mode === 0" />
-    <recorder-panel v-else-if=" mode === 1" />
-    <analyzer-panel v-else-if=" mode === 2" />
+    <home-panel v-if=" mode === 'home'" />
+    <recorder-panel v-else-if=" mode === 'recorder'" />
+    <analyzer-panel v-else-if=" mode === 'analyzer'" />
 </template>
 
 <style scoped>

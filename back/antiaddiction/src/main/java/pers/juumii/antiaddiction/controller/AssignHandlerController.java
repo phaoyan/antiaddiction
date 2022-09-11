@@ -49,7 +49,6 @@ public class AssignHandlerController {
 
     @PostMapping("/handler/assign")
     public void assignHandler(@RequestBody String jsonString){
-        System.out.println(jsonString);
         //json中传一个数字索引和一个handler的信息，数字索引通过PatternList对应behavior pattern
         Gson gson = AdaptedGsonProvider.getGsonWithDeserializeAdapter();
         JsonObject json = gson.fromJson(jsonString, JsonObject.class);

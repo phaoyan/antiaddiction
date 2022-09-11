@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import pers.juumii.antiaddiction.model.pattern.handler.BehaviorHandler;
 import pers.juumii.antiaddiction.model.pattern.pattern.BehaviorPattern;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
+import pers.juumii.antiaddiction.model.util.Paths;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -19,8 +21,8 @@ import java.util.ArrayList;
 @Repository
 public class PatternList {
     private ArrayList<BehaviorPattern> patterns;
-    @Value("${patternListSrc}")
-    private String src;
+    @Autowired
+    private Paths paths;
 
     @PostConstruct
     public void init(){
@@ -67,14 +69,9 @@ public class PatternList {
         return res;
     }
 
-
-    public void setSrc(String src) {
-        this.src = src;
-    }
-
     public void readFile(){
         try {
-            JsonArray json = new Gson().fromJson(FileUtils.readFileToString(new File(src), StandardCharsets.UTF_8), JsonArray.class);
+            JsonArray json = new Gson().fromJson(FileUtils.readFileToString(new File(paths.getPatternListSrc()), StandardCharsets.UTF_8), JsonArray.class);
             patterns = new ArrayList<>();
             setPatterns(json);
 
@@ -87,7 +84,7 @@ public class PatternList {
 
     public void toFile(){
         try {
-            FileUtils.writeStringToFile(new File(src), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(patterns), StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(paths.getPatternListSrc()), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(patterns), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -13,7 +13,10 @@ const emit = defineEmits(['changeDisplay'])
         <time-bar :behavior = "behavior" @changeDisplay = "()=>{ emit('changeDisplay', 'brief')}"/>
         <div class="name" v-for="momentary in behavior.details" :key="momentary">
             <div v-for="data in momentary.overallEnvironment.datum" :key="data">
-                <p class="item">{{data.processName}}{{data.url}}</p>
+                <p class="item">
+                    {{data.processName}}
+                    <a>{{data.url}}</a>
+                </p>
             </div>
         </div>
     </div>
