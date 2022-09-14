@@ -34,9 +34,6 @@ public class WebsiteBrowsingDataController {
 
     @Autowired
     private WebsiteBrowsingDataCollector websiteBrowsingDataCollector;
-
-
-
     @PostMapping("/website/record/add")
     public void receiveWebsiteBrowsingData(@RequestBody String json) throws MalformedURLException {
         websiteBrowsingDataCollector.addBrowsingData(new URL(json));

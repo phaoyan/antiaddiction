@@ -1,11 +1,12 @@
-package pers.juumii.antiaddiction.model.pattern.handler;
+package pers.juumii.antiaddiction.model.pattern.handler.impl;
 
 import com.google.gson.JsonElement;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerProcess;
+import pers.juumii.antiaddiction.model.pattern.handler.event.Event;
 
 import java.io.IOException;
 
-public class CeaseComputerProcessImpl implements BehaviorHandler{
+public class CeaseComputerProcessImpl implements BehaviorHandler {
 
     public final String className = getClass().getName();
     public final String simplifiedName = "cease computer process";
@@ -18,7 +19,7 @@ public class CeaseComputerProcessImpl implements BehaviorHandler{
     public CeaseComputerProcessImpl() {}
 
     public CeaseComputerProcessImpl(JsonElement json) {
-        target = new ComputerProcess(json.getAsJsonObject().get("target").getAsJsonObject().get("processName").getAsString());
+        init(json);
     }
 
     public void setTarget(ComputerProcess target) {
@@ -38,16 +39,18 @@ public class CeaseComputerProcessImpl implements BehaviorHandler{
     }
 
     @Override
-    public void handle() {
+    public void init(JsonElement json) {
+        target = new ComputerProcess(json.getAsJsonObject().get("target").getAsJsonObject().get("processName").getAsString());
+    }
+
+    @Override
+    public void handle(Event event) {
         try {
             Runtime.getRuntime().exec("cmd /c wmic process where name='" + target.getProcessName() + "'  delete");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public static void main(String[] args) {
-        CeaseComputerProcessImpl impl = new CeaseComputerProcessImpl();
-        impl.setTarget(new ComputerProcess("bdcam.exe", 10));
-        impl.handle();
-    }
+
+
 }

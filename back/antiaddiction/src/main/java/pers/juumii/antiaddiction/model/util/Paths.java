@@ -20,6 +20,10 @@ public class Paths {
     private String manualSetRuleSrc;
     @Value("${screenSrc}")
     private String screenSrc;
+    @Value("${globalListenerSrc}")
+    private String globalListenerSrc;
+    @Value("${websiteRedirectionListSrc}")
+    private String websiteRedirectionListSrc;
 
     public String getStaticPrefix() {
         return staticPrefix;
@@ -47,5 +51,13 @@ public class Paths {
 
     public String getScreenSrc() {
         return staticPrefix + screenSrc;
+    }
+
+    public String getGlobalListenerSrc() {
+        return staticPrefix + globalListenerSrc;
+    }
+
+    public String getWebsiteRedirectionListSrc() {
+        return staticPrefix + websiteRedirectionListSrc;
     }
 }

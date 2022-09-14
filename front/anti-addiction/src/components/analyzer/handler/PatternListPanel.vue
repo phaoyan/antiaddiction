@@ -1,37 +1,38 @@
 <script setup>
-import {ref, inject} from "vue"
-import axios from "axios"
-import PatternTable from "../pattern/PatternTable.vue"
+import {ref, provide} from "vue"
+import DisplayPatternPanel from './DisplayPatternPanel.vue';
+import CreatePatternPanel from "./CreatePatternPanel.vue";
 
 
-const patternList = inject('patternList')
-const selectedPattern = inject('selectedPattern')
-const selectedIndex = inject('selectedIndex')
+const mode = ref('display')
+provide('mode', mode)
 
-
-const addHandler = (index)=>{
-    selectedPattern.value = patternList.value[index]
-    selectedIndex.value = index
+const changeDisplayMode = ()=>{
+    if(mode.value === 'display')
+        mode.value = 'create';
+    else if(mode.value === 'create')
+        mode.value = 'display'
 }
-
 
 
 </script>
 
 <template>
-    <el-scrollbar height="72vh">
+    <div class="box">
         <div class="header">
             <div class="label">Patterns&nbsp;</div>
+            <el-icon class="icon-button" size="120%" @click="changeDisplayMode()" v-if="mode === 'display'"><Plus /></el-icon>
+            <el-icon class="icon-button" size="120%" @click="changeDisplayMode()" v-if="mode === 'create'"><Back /></el-icon>
         </div>
-        <pattern-table 
-        :patternList="patternList"
-        v-slot="scope">
-            <el-icon class="icon-button" size="150%" @click="addHandler(scope.index)" v-if="selectedIndex != scope.index"><Guide /></el-icon>
-            <el-icon class="icon-button" size="150%" @click="selectedIndex=-1;selectedPattern=null" v-if="selectedIndex == scope.index"><EditPen /></el-icon>
-        </pattern-table>
-    </el-scrollbar>
+        <div class="main">
+            <display-pattern-panel v-if="mode == 'display'"/>
+            <create-pattern-panel v-if="mode == 'create'"/>
+        </div>
+    </div>
 </template>
 
 <style scoped>
-
+.box{
+    display: block;
+}
 </style>

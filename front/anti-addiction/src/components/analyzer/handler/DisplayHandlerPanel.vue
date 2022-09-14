@@ -1,31 +1,44 @@
 <script setup>
-import {inject} from "vue"
+import {inject,provide} from "vue"
+import axios from "axios"
 import CeaseComputerProcessHandlerArea from "./handlerArea/CeaseComputerProcessHandlerArea.vue"
 import WebsiteRedirectionHandlerArea from "./handlerArea/WebsiteRedirectionHandlerArea.vue"
 
-const patternList = inject('patternList')
+const listenerList = inject('listenerList')
+const update = inject('update')
+
+const deleteHandler = async (index)=>{
+    await axios.post("http://localhost:8080/handler/delete",index,{
+        headers: {
+                    'Content-Type':'application/json'
+                }
+    })
+    update.value = !update.value
+}
+
+provide('deleteHandler', deleteHandler)
 
 </script>
 
 <template>
     <el-scrollbar height="72vh">
         <el-table
-        :data="patternList"
+        :data="listenerList"
         :show-header="false">
             <el-table-column>
-                    <template v-slot="scope">
-                        <el-scrollbar height="20vh">
-                            <cease-computer-process-handler-area 
-                            v-if="patternList[scope.$index].handler != null && patternList[scope.$index].handler.simplifiedName == 'cease computer process'"
-                            :index="scope.$index"/>
-                            <website-redirection-handler-area 
-                            v-if="patternList[scope.$index].handler != null && patternList[scope.$index].handler.simplifiedName == 'limit website access'"
-                            :index="scope.$index"/>
-                            <div class="empty" v-if="patternList[scope.$index].handler == null">
-                                    no handler
-                            </div>
-                        </el-scrollbar>
-                    </template>
+                <template v-slot="scope">
+                    <el-scrollbar height="20vh">
+                        <cease-computer-process-handler-area 
+                        v-if="listenerList[scope.$index].handler != null && listenerList[scope.$index].handler.simplifiedName == 'cease computer process'"
+                        :index="scope.$index"/>
+                        <website-redirection-handler-area 
+                        v-if="listenerList[scope.$index].handler != null && listenerList[scope.$index].handler.simplifiedName == 'limit website access'"
+                        :index="scope.$index"/>
+                        <div class="empty" v-if="listenerList[scope.$index].handler == null">
+                                no handler
+                        </div>
+                    </el-scrollbar>
+                </template>
             </el-table-column>
         </el-table>
     </el-scrollbar>

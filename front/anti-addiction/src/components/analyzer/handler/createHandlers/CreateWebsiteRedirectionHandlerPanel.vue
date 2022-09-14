@@ -13,10 +13,8 @@ const getHandlerOriginal = async ()=>{
     let handler
     await axios.get("http://localhost:8080/handler/original",{params:{simplifiedName:"limit website access"}}).then(e=>{
         handler = e.data
+        console.log(e.data)
     })
-
-    console.log(handler)
-
     return handler
 }
 
@@ -28,7 +26,7 @@ const postHandler = async()=>{
         index:index.value,
         handler:handler
     }
-    await axios.post("http://localhost:8080/handler/assign",json)
+    await axios.post("http://localhost:8080/handler/assign/onCreateAndDelete",json)
     patternData.value = null
     update.value = !update.value
 

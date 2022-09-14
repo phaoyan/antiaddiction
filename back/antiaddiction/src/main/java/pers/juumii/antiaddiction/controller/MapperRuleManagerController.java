@@ -29,12 +29,11 @@ public class MapperRuleManagerController {
     }
     @Autowired
     private ManualSetRule manualSetRule;
-    @PostMapping("/registeredBehaviors")
+    @PostMapping("/behavior/registered")
     public void postRegisteredBehaviorList(@RequestBody String jsonString){
         manualSetRule.setMapperBehaviorList(new Gson().fromJson(jsonString, JsonArray.class));
     }
-
-    @GetMapping("/registeredBehaviors")
+    @GetMapping("/behavior/registered")
     public String getMapperBehaviorList(){
         return AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(manualSetRule.getMapperBehaviorList());
     }

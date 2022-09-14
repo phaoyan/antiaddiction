@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 import pers.juumii.antiaddiction.model.util.Paths;
@@ -60,6 +59,13 @@ public class BehaviorHistory{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public TimedBehavior getLastTimedBehavior(){
+        return history.get(history.size()-1);
+    }
+    public MomentaryBehavior getLastMomentaryBehavior(){
+        TimedBehavior lastTimedBehavior = getLastTimedBehavior();
+        return lastTimedBehavior.getDetails().get(lastTimedBehavior.getDetails().size()-1);
     }
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;

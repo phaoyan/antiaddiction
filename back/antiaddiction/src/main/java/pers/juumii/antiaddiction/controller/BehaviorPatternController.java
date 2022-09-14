@@ -12,7 +12,7 @@ import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 @RestController
 public class BehaviorPatternController {
 
-    @GetMapping("/patternOriginal")
+    @GetMapping("/pattern/original")
     public String getPatternOriginal(@RequestParam String patternType){
         String resJson = null;
         Gson gson = AdaptedGsonProvider.getGsonWithSerializeAdapter();

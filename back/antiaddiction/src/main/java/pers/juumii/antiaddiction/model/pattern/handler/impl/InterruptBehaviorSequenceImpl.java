@@ -1,24 +1,29 @@
-package pers.juumii.antiaddiction.model.pattern.handler;
+package pers.juumii.antiaddiction.model.pattern.handler.impl;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.google.gson.JsonElement;
 import pers.juumii.antiaddiction.model.behavior.BehaviorHistory;
 import pers.juumii.antiaddiction.model.behavior.TimedBehavior;
+import pers.juumii.antiaddiction.model.pattern.handler.event.Event;
+import pers.juumii.antiaddiction.model.util.SpringUtils;
 
 import java.time.Duration;
 
-@Service
-public class InterruptBehaviorSequenceImpl implements BehaviorHandler{
+public class InterruptBehaviorSequenceImpl implements BehaviorHandler {
 
     public final String className = getClass().getName();
-    public final String simplifiedName = "limit website access";
+    public final String simplifiedName = "interrupt behavior sequence";
 
-    @Autowired
     private BehaviorHistory behaviorHistory;
     private BehaviorHandler handler;
     private TimedBehavior former, latter;
     private int interval;
+
+    public InterruptBehaviorSequenceImpl(){}
+
+    public InterruptBehaviorSequenceImpl(JsonElement json){
+        init(json);
+    }
 
     public TimedBehavior getFormer() {
         return former;
@@ -63,9 +68,16 @@ public class InterruptBehaviorSequenceImpl implements BehaviorHandler{
     }
 
     @Override
-    public void handle() {
+    public void init(JsonElement json) {
+
+    }
+
+    @Override
+    public void handle(Event event) {
         if(former == null || latter == null)
             return;
+        if(behaviorHistory == null)
+            behaviorHistory = SpringUtils.getBean(BehaviorHistory.class);
 
         TimedBehavior last = behaviorHistory.getHistory().get(behaviorHistory.getHistory().size()-1);
         if(last.equals(former))
@@ -74,7 +86,7 @@ public class InterruptBehaviorSequenceImpl implements BehaviorHandler{
             latter.setStartTime(last.getStartTime());
 
         if(Duration.between(former.getEndTime(),latter.getStartTime()).getNano() < interval)
-            handler.handle();
+            handler.handle(event);
     }
 
 

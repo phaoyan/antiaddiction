@@ -5,9 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import pers.juumii.antiaddiction.model.pattern.handler.BehaviorHandler;
 import pers.juumii.antiaddiction.model.pattern.pattern.BehaviorPattern;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 import pers.juumii.antiaddiction.model.util.Paths;
@@ -52,21 +50,6 @@ public class PatternList {
 
     public ArrayList<BehaviorPattern> getPatterns() {
         return patterns;
-    }
-
-    public void setHandler(int index, BehaviorHandler handler){
-        patterns.get(index).setHandler(handler);
-        toFile();
-    }
-
-    public ArrayList<BehaviorHandler> getHandlers(){
-        ArrayList<BehaviorHandler> res = new ArrayList<>();
-
-        for(BehaviorPattern pattern: patterns){
-            res.add(pattern.getHandler());
-        }
-
-        return res;
     }
 
     public void readFile(){

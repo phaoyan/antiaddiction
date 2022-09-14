@@ -64,7 +64,7 @@ const select = (selection)=>{
 
 const postBehaviorList = async ()=>{
     console.log(behaviorList.value)
-    await axios.post("http://localhost:8080/registeredBehaviors", behaviorList.value)
+    await axios.post("http://localhost:8080/behavior/registered", behaviorList.value)
     await axios.post("http://localhost:8080/priorityList", behaviorList.value)
 }
 
@@ -92,7 +92,7 @@ const init = async ()=>{
     await axios.get("http://localhost:8080/environment").then(e=>{
         environmentDatum.value = e.data
     })
-    await axios.get("http://localhost:8080/registeredBehaviors").then(e=>{
+    await axios.get("http://localhost:8080/behavior/registered").then(e=>{
         behaviorList.value = e.data
     })
 

@@ -27,11 +27,7 @@ const options = ref([
                 label:"interrupt untimed sequence"
             }
         ]
-    },
-    {
-        value:"",
-        label:""
-    },
+    }
 ])
 const option = ref(['default'])
 
@@ -46,10 +42,8 @@ const option = ref(['default'])
             placeholder="select a handler"
             :show-all-levels="false"/>
         </div>
-        <create-cease-computer-process-handler-panel 
-        v-if="option[option.length-1]=='cease computer process'"/>
-        <create-website-redirection-handler-panel
-        v-if="option[option.length-1]=='limit website access'"/>
+        <create-cease-computer-process-handler-panel v-if="option[option.length-1]=='cease computer process'"/>
+        <create-website-redirection-handler-panel v-if="option[option.length-1]=='limit website access'"/>
     </div>
     
 </template>

@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pers.juumii.antiaddiction.model.pattern.PatternList;
-import pers.juumii.antiaddiction.model.pattern.handler.BehaviorHandler;
-import pers.juumii.antiaddiction.model.pattern.handler.WebsiteRedirectionImpl;
+import pers.juumii.antiaddiction.model.pattern.handler.impl.WebsiteRedirectionList;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ public class WebsiteAccessController {
         return first == target;
     }
     public static void pointToFirst(WebsiteAccessController target){
-        target.patternList = first.patternList;
+        target.websiteRedirectionList = first.websiteRedirectionList;
     }
     @PostConstruct
     public void init(){
@@ -32,31 +30,21 @@ public class WebsiteAccessController {
             pointToFirst(this);
     }
     @Autowired
-    private PatternList patternList;
+    private WebsiteRedirectionList websiteRedirectionList;
     @GetMapping("/website/redirection")
     public String getBlockingList(){
         ArrayList<ArrayList<String>> res = new ArrayList<>();
         ArrayList<String> blockingList = new ArrayList<>();
         ArrayList<String> targetList = new ArrayList<>();
-        for(BehaviorHandler handler: patternList.getHandlers()){
-            if(handler == null)
-                continue;
-//            System.out.println(handler.getClassName().equals(WebsiteRedirectionImpl.class.getName()));
-//            System.out.println(handler.getClassName());
-//            System.out.println(WebsiteRedirectionImpl.class.getName());
-            if(handler.getClassName().equals(WebsiteRedirectionImpl.class.getName()) && ((WebsiteRedirectionImpl) handler).getTargetUrl() != null){
-                blockingList.add(((WebsiteRedirectionImpl)handler).getSourceUrl());
-                targetList.add(((WebsiteRedirectionImpl)handler).getTargetUrl());
-            }
 
-
+        for(String pair: websiteRedirectionList.getWebsiteRedirectionList()){
+            blockingList.add(pair.split(" ")[0]);
+            targetList.add(pair.split(" ")[1]);
         }
-//        System.out.println(new Gson().toJson(blockingList));
 
         res.add(blockingList);
         res.add(targetList);
         return new Gson().toJson(res);
-
     }
 
 }

@@ -2,11 +2,11 @@ package pers.juumii.antiaddiction.model.util;
 
 import com.google.gson.*;
 import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
-import pers.juumii.antiaddiction.model.pattern.handler.BehaviorHandler;
+import pers.juumii.antiaddiction.model.pattern.handler.impl.BehaviorHandler;
+import pers.juumii.antiaddiction.model.pattern.handler.impl.WebsiteRedirectionImpl;
 import pers.juumii.antiaddiction.model.pattern.pattern.BehaviorPattern;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -46,7 +46,16 @@ public class AdaptedGsonProvider {
         GsonBuilder builder = new GsonBuilder();
 
         builder.registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (source, typeOfSrc, context) -> new JsonPrimitive(source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
-
+        builder.registerTypeAdapter(WebsiteRedirectionImpl.class, ((JsonSerializer<WebsiteRedirectionImpl>) (source, typeOfSrc, context) ->{
+            JsonObject res = new JsonObject();
+            res.add("className", new JsonPrimitive(source.getClassName()));
+            res.add("simplifiedName", new JsonPrimitive(source.getSimplifiedName()));
+            if(source.getSourceUrl() != null)
+                res.add("sourceUrl", new JsonPrimitive(source.getSourceUrl()));
+            if(source.getTargetUrl() != null)
+                res.add("targetUrl", new JsonPrimitive(source.getTargetUrl()));
+            return res;
+        }));
         return builder.create();
     }
 }

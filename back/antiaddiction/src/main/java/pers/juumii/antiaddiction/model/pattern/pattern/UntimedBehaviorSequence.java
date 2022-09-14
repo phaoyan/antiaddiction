@@ -3,7 +3,6 @@ package pers.juumii.antiaddiction.model.pattern.pattern;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import pers.juumii.antiaddiction.model.behavior.TimedBehavior;
-import pers.juumii.antiaddiction.model.pattern.handler.BehaviorHandler;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 
 
@@ -16,7 +15,6 @@ public class UntimedBehaviorSequence implements BehaviorPattern{
     public final String patternType = "untimedSequence";
 
     private ArrayList<TimedBehavior> behaviorList;
-    private BehaviorHandler handler;
 
     public UntimedBehaviorSequence(){
         behaviorList = new ArrayList<>();
@@ -31,7 +29,7 @@ public class UntimedBehaviorSequence implements BehaviorPattern{
             deserialized.add(gson.fromJson(behavior, TimedBehavior.class));
         }
         behaviorList = deserialized;
-        handler = gson.fromJson(json.getAsJsonObject().get("handler"), BehaviorHandler.class);
+//        handler = gson.fromJson(json.getAsJsonObject().get("handler"), BehaviorHandler.class);
         for(TimedBehavior behavior: behaviorList){
             behavior.getDetails().clear();
         }
@@ -43,10 +41,6 @@ public class UntimedBehaviorSequence implements BehaviorPattern{
     }
     public ArrayList<TimedBehavior> getBehaviorList() {
         return this.behaviorList;
-    }
-
-    public void setHandler(BehaviorHandler handler) {
-        this.handler = handler;
     }
 
     @Override
@@ -71,9 +65,5 @@ public class UntimedBehaviorSequence implements BehaviorPattern{
         return true;
     }
 
-    @Override
-    public BehaviorHandler getHandler() {
-        return handler;
-    }
 
 }

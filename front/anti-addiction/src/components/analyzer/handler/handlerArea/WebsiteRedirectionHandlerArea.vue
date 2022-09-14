@@ -7,25 +7,20 @@ const prop = defineProps({
     index:Number
 })
 
-const patternList = inject('patternList')
-const patternData = patternList.value[prop.index]
-
-const deleteHandler = async ()=>{
-    patternList.value[prop.index].handler = null
-    await axios.post("http://localhost:8080/patternList",patternList.value)
-
-}
+const listenerList = inject('listenerList')
+const deleteHandler = inject('deleteHandler')
+const listenerData = listenerList.value[prop.index]
 
 </script>
 
 <template>
     <div class="main">
-        <handler-label :name="patternData.handler.simplifiedName" @deleteHandler="deleteHandler()"/>
+        <handler-label :name= listenerData.handler.simplifiedName @deleteHandler="deleteHandler(index)"/>
         <div class="urls">
             <div class="content">from:</div>
-            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{patternData.handler.sourceUrl}}</div>
+            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{listenerData.handler.sourceUrl}}</div>
             <div class="content">to:</div>
-            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{patternData.handler.targetUrl}}</div>
+            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{ listenerData.handler.targetUrl}}</div>
         </div>
     </div>
 </template>

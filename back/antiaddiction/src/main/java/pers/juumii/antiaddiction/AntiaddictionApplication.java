@@ -8,8 +8,9 @@ import pers.juumii.antiaddiction.model.behavior.collector.TimedBehaviorCollector
 import pers.juumii.antiaddiction.model.environment.collector.DataListCollector;
 import pers.juumii.antiaddiction.model.environment.collector.OverallEnvironmentDataCollector;
 import pers.juumii.antiaddiction.model.pattern.collector.BehaviorPatternCollector;
-import pers.juumii.antiaddiction.model.pattern.handler.OverallHandler;
 import pers.juumii.antiaddiction.model.util.TimeLine;
+
+import java.util.ArrayList;
 
 @SpringBootApplication
 public class AntiaddictionApplication {
@@ -23,13 +24,14 @@ public class AntiaddictionApplication {
 		BehaviorHistoryCollector behaviorHistoryCollector = ctx.getBean(BehaviorHistoryCollector.class);
 		BehaviorPatternCollector behaviorPatternCollector = ctx.getBean(BehaviorPatternCollector.class);
 		DataListCollector dataListCollector = ctx.getBean(DataListCollector.class);
-		OverallHandler overallHandler = ctx.getBean(OverallHandler.class);
-		TimeLine timeLine = new TimeLine(60*1000);
+		TimeLine timeLine = ctx.getBean(TimeLine.class);
+		timeLine.setUnit(60*1000);
+		timeLine.setFlag(true);
+		timeLine.setOperations(new ArrayList<>());
 		timeLine.addTask(timedBehaviorCollector::collect, 2);
 		timeLine.addTask(behaviorHistoryCollector::collect, 2);
 		timeLine.addTask(behaviorPatternCollector::collect,2);
 		timeLine.addTask(()->dataListCollector.updateDataList(overallEnvironmentDataCollector.collect()),5);
-		timeLine.addTask(overallHandler::handle,2);
 		timeLine.start();
 
 

@@ -19,12 +19,13 @@ const getHandlerOriginal = async ()=>{
 
 const postHandler = async()=>{
     let handler = await getHandlerOriginal()
+    
     handler.target.processName=processName.value
     let json = {
         index:index.value,
         handler:handler
     }
-    await axios.post("http://localhost:8080/handler/assign",json)
+    await axios.post("http://localhost:8080/handler/assign/onLoop",json)
     patternData.value = null
     update.value = !update.value
 

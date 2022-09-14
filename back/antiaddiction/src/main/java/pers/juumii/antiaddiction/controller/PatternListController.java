@@ -32,7 +32,7 @@ public class PatternListController {
     }
     @Autowired
     private PatternList patternList;
-    @PostMapping("/patternList")
+    @PostMapping("/pattern/list")
     public void postPatternList(@RequestBody String json){
         try {
             if(json.getBytes()[0]=='[')
@@ -43,8 +43,7 @@ public class PatternListController {
             throw new RuntimeException(e);
         }
     }
-
-    @GetMapping("/patternList")
+    @GetMapping("/pattern/list")
     public String getPatternList(){
         return AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(patternList.getPatterns());
     }

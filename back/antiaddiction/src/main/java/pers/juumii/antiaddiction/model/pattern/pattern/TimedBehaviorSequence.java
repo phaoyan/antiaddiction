@@ -3,7 +3,6 @@ package pers.juumii.antiaddiction.model.pattern.pattern;
 import com.google.gson.JsonElement;
 import org.apache.commons.math3.util.Pair;
 import pers.juumii.antiaddiction.model.behavior.TimedBehavior;
-import pers.juumii.antiaddiction.model.pattern.handler.BehaviorHandler;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -121,16 +120,6 @@ public class TimedBehaviorSequence implements BehaviorPattern {
                 return false;
 
         return timeEquivalent((TimedBehaviorSequence) other);
-    }
-
-    @Override
-    public void setHandler(BehaviorHandler handler) {
-
-    }
-
-    @Override
-    public BehaviorHandler getHandler() {
-        return null;
     }
 
 }
