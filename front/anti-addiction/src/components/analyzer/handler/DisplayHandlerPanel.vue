@@ -3,6 +3,7 @@ import {inject,provide} from "vue"
 import axios from "axios"
 import CeaseComputerProcessHandlerArea from "./handlerArea/CeaseComputerProcessHandlerArea.vue"
 import WebsiteRedirectionHandlerArea from "./handlerArea/WebsiteRedirectionHandlerArea.vue"
+import AutoRunHandlerArea from "./handlerArea/AutoRunHandlerArea.vue"
 
 const listenerList = inject('listenerList')
 const update = inject('update')
@@ -33,6 +34,9 @@ provide('deleteHandler', deleteHandler)
                         :index="scope.$index"/>
                         <website-redirection-handler-area 
                         v-if="listenerList[scope.$index].handler != null && listenerList[scope.$index].handler.simplifiedName == 'limit website access'"
+                        :index="scope.$index"/>
+                        <auto-run-handler-area
+                        v-if="listenerList[scope.$index].handler != null && listenerList[scope.$index].handler.simplifiedName == 'run computer process'"
                         :index="scope.$index"/>
                         <div class="empty" v-if="listenerList[scope.$index].handler == null">
                                 no handler
