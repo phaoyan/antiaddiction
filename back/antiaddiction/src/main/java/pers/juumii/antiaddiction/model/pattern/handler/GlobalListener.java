@@ -13,8 +13,7 @@ import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 import pers.juumii.antiaddiction.model.util.Paths;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,15 +41,13 @@ public class GlobalListener{
 
     public void addListener(EventListener listener){
         listenerList.add(listener);
-        Event createEvent = new Event(EventType.CreateEvent);
-        createEvent.setSource(listener);
+        Event createEvent = new Event(listener, EventType.CreateEvent);
         onAction(createEvent);
         toFile();
     }
 
     public void removeListener(EventListener listener){
-        Event deleteEvent = new Event(EventType.DeleteEvent);
-        deleteEvent.setSource(listener);
+        Event deleteEvent = new Event(listener, EventType.DeleteEvent);
         onAction(deleteEvent);
         listenerList.remove(listener);
         toFile();
@@ -91,5 +88,18 @@ public class GlobalListener{
     public void onAction(Event event) {
         for(EventListener listener: listenerList)
             listener.onAction(event);
+    }
+
+    public static void main(String[] args) throws IOException {
+        File file = new File("D:\\coding\\projects\\applicationProjects\\antiaddiction\\back\\antiaddiction\\src\\main\\java\\pers\\juumii\\antiaddiction\\model\\pattern\\handler\\test.bat");
+        file.createNewFile();
+        FileUtils.writeStringToFile(file, "start \" \" \"D:\\games\\Genshin Impact\\launcher.exe\"", StandardCharsets.UTF_8);
+        Runtime.getRuntime().exec("D:\\coding\\projects\\applicationProjects\\antiaddiction\\back\\antiaddiction\\src\\main\\java\\pers\\juumii\\antiaddiction\\model\\pattern\\handler\\test.bat");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        file.delete();
     }
 }

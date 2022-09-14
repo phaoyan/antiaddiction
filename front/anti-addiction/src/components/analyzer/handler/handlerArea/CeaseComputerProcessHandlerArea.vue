@@ -1,6 +1,5 @@
 <script setup>
 import {inject} from "vue"
-import axios from "axios"
 import HandlerLabel from "./HandlerLabel.vue"
 
 const prop = defineProps({

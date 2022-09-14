@@ -66,11 +66,11 @@ public class WebsiteRedirectionImpl implements BehaviorHandler {
         if(event.getSource() instanceof EventListener
                 && ((EventListener)event.getSource()).getHandler().equals(this)
                 && event.getEventType().equals(EventType.CreateEvent))
-            websiteRedirectionList.update(sourceUrl, targetUrl, true);
+            websiteRedirectionList.add(sourceUrl, targetUrl);
         if(event.getSource() instanceof EventListener
                 && ((EventListener)event.getSource()).getHandler().equals(this)
                 && event.getEventType().equals(EventType.DeleteEvent))
-            websiteRedirectionList.update(sourceUrl, targetUrl, false);
+            websiteRedirectionList.remove(sourceUrl, targetUrl);
 
     }
 }

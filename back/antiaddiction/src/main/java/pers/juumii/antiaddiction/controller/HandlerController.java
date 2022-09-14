@@ -49,9 +49,7 @@ public class HandlerController {
         return null;
     }
 
-
-    @PostMapping("/handler/assign/onLoop")
-    public void assignHandlerOnLoop(@RequestBody String jsonString){
+    private void assignHandler(String jsonString, EventType eventType){
         Gson gson = AdaptedGsonProvider.getGsonWithDeserializeAdapter();
         JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
         int index = jsonObject.get("index").getAsInt();
@@ -59,24 +57,25 @@ public class HandlerController {
             //todo
         }
         BehaviorHandler handler = gson.fromJson(jsonObject.get("handler").getAsJsonObject(), BehaviorHandler.class);
-        EventListener listener = new EventListener(EventType.LoopEvent);
+        EventListener listener = new EventListener(eventType);
         listener.setHandler(handler);
         globalListener.addListener(listener);
     }
 
+    @PostMapping("/handler/assign/onLoop")
+    public void assignHandlerOnLoop(@RequestBody String jsonString){
+        assignHandler(jsonString, EventType.LoopEvent);
+    }
+
     @PostMapping("/handler/assign/onCreateAndDelete")
     public void assignHandlerOnCreateAndDelete(@RequestBody String jsonString){
-        Gson gson = AdaptedGsonProvider.getGsonWithDeserializeAdapter();
-        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
-        int index = jsonObject.get("index").getAsInt();
-        if(index >= 0){
-            //todo
-        }
-        JsonObject jsonHandler = jsonObject.get("handler").getAsJsonObject();
-        BehaviorHandler handler = gson.fromJson(jsonHandler, BehaviorHandler.class);
+        assignHandler(jsonString, EventType.CreateEvent);
+        assignHandler(jsonString, EventType.DeleteEvent);
+    }
 
-        globalListener.addListener(new EventListener(EventType.CreateEvent,handler));
-        globalListener.addListener(new EventListener(EventType.DeleteEvent,handler));
+    @PostMapping("/handler/assign/onStartup")
+    public void assignHandlerOnStartup(@RequestBody String jsonString){
+        assignHandler(jsonString, EventType.StartupEvent);
     }
 
     @PostMapping("/handler/delete")

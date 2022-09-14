@@ -29,14 +29,6 @@ public class WebsiteRedirectionList {
         readFile();
     }
 
-    public Paths getPaths() {
-        return paths;
-    }
-
-    public void setPaths(Paths paths) {
-        this.paths = paths;
-    }
-
     private void readFile() {
         try{
             websiteRedirectionList = new ArrayList<>();
@@ -62,13 +54,17 @@ public class WebsiteRedirectionList {
         }
     }
 
-    public void update(String sourceUrl, String targetUrl, boolean flag) {
-        if(flag && !websiteRedirectionList.contains(sourceUrl + " " + targetUrl))
+    public void add(String sourceUrl, String targetUrl){
+        if(!websiteRedirectionList.contains(sourceUrl + " " + targetUrl))
             websiteRedirectionList.add(sourceUrl + " " + targetUrl);
-        if(!flag)
-            websiteRedirectionList.remove(sourceUrl + " " + targetUrl);
         toFile();
     }
+
+    public void remove(String sourceUrl, String targetUrl){
+        websiteRedirectionList.remove(sourceUrl + " " + targetUrl);
+        toFile();
+    }
+
 
     public List<String> getWebsiteRedirectionList() {
         return websiteRedirectionList;

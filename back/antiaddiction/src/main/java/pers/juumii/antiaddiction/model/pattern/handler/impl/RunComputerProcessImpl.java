@@ -2,15 +2,15 @@ package pers.juumii.antiaddiction.model.pattern.handler.impl;
 
 import com.google.gson.JsonElement;
 import pers.juumii.antiaddiction.model.pattern.handler.event.Event;
+import pers.juumii.antiaddiction.model.util.CMD;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
+import pers.juumii.antiaddiction.model.util.SpringUtils;
 
-import java.io.IOException;
 
 public class RunComputerProcessImpl extends RunImpl{
 
     public final String className = getClass().getName();
     public final String simplifiedName = "run computer process";
-
     private String path;
 
     public RunComputerProcessImpl(){}
@@ -35,11 +35,8 @@ public class RunComputerProcessImpl extends RunImpl{
 
     @Override
     public void handle(Event event) {
-        try {
-            Runtime.getRuntime().exec(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        CMD cmd = SpringUtils.getBean(CMD.class);
+        cmd.run(path);
     }
 
 }

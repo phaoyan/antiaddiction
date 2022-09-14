@@ -24,6 +24,8 @@ public class Paths {
     private String globalListenerSrc;
     @Value("${websiteRedirectionListSrc}")
     private String websiteRedirectionListSrc;
+    @Value("${batSrc}")
+    private String batSrc;
 
     public String getStaticPrefix() {
         return staticPrefix;
@@ -59,5 +61,9 @@ public class Paths {
 
     public String getWebsiteRedirectionListSrc() {
         return staticPrefix + websiteRedirectionListSrc;
+    }
+
+    public String getBatSrc() {
+        return staticPrefix + batSrc;
     }
 }

@@ -3,8 +3,8 @@ package pers.juumii.antiaddiction.model.pattern.handler.impl;
 import com.google.gson.JsonElement;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerProcess;
 import pers.juumii.antiaddiction.model.pattern.handler.event.Event;
-
-import java.io.IOException;
+import pers.juumii.antiaddiction.model.util.CMD;
+import pers.juumii.antiaddiction.model.util.SpringUtils;
 
 public class CeaseComputerProcessImpl implements BehaviorHandler {
 
@@ -45,11 +45,8 @@ public class CeaseComputerProcessImpl implements BehaviorHandler {
 
     @Override
     public void handle(Event event) {
-        try {
-            Runtime.getRuntime().exec("cmd /c wmic process where name='" + target.getProcessName() + "'  delete");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        CMD cmd = SpringUtils.getBean(CMD.class);
+        cmd.taskKill(target.getProcessName());
     }
 
 
