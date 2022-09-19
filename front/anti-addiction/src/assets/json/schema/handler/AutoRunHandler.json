@@ -1,0 +1,15 @@
+{
+    "type":"object",
+    "properties":{
+        "type":{
+            "title":"type",
+            "type":"string",
+            "enum":["computer process","website"]
+        },
+        "uri":{
+            "title":"path",
+            "type":"string",
+            "format":"uri"
+        }
+    }
+}

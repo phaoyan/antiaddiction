@@ -1,0 +1,9 @@
+{
+    "type":"object",
+    "properties":{
+        "processName":{
+            "title":"process name",
+            "type":"string"
+        }
+    }
+}

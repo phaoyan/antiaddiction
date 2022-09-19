@@ -1,0 +1,15 @@
+{
+    "type":"object",
+    "properties":{
+        "sourcesUrl":{
+            "title":"source url",
+            "type":"string",
+            "format":"uri"
+        },
+        "targetUrl":{
+            "title":"target url",
+            "type":"string",
+            "format":"uri"
+        }
+    }
+}

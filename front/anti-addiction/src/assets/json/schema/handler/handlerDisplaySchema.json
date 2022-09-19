@@ -1,0 +1,11 @@
+{
+  "type": "array",
+  "title": "handler list",
+  "items": {
+    "type": "array",
+    "title": "handler desc",
+    "items": {
+      "type": "string"
+    }
+  }
+}
