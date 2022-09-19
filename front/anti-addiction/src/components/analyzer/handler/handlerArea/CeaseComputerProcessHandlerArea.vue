@@ -6,17 +6,17 @@ const prop = defineProps({
     index:Number
 })
 
-const listenerList = inject('listenerList')
+const handlerList = inject('handlerList')
 const deleteHandler = inject('deleteHandler')
-const listenerData = listenerList.value[prop.index]
+const handlerData = handlerList.value[prop.index]
 
 </script>
 
 <template>
     <div class="main">
-        <handler-label :name="listenerData.handler.simplifiedName" @deleteHandler="deleteHandler(index)"/>
+        <handler-label :name="handlerData.handler.name" @deleteHandler="deleteHandler(index)"/>
         <div class="content">
-            {{listenerData.handler.target.processName}}
+            {{handlerData.handler.target.processName}}
         </div>
     </div>
 </template>

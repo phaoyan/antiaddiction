@@ -3,7 +3,7 @@ package pers.juumii.antiaddiction.model.util;
 import org.apache.commons.math3.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pers.juumii.antiaddiction.model.pattern.handler.GlobalListener;
+import pers.juumii.antiaddiction.model.pattern.handler.event.GlobalBroadcast;
 import pers.juumii.antiaddiction.model.pattern.handler.event.Event;
 import pers.juumii.antiaddiction.model.pattern.handler.event.EventType;
 
@@ -15,7 +15,7 @@ public class TimeLine extends Thread{
     private long unit;//时间单位,unit 毫秒
     private ArrayList<Pair<LoopOperation, Integer>> operations;
     @Autowired
-    private GlobalListener globalListener;
+    private GlobalBroadcast globalBroadcast;
     private boolean flag;
 
     public boolean isFlag() {
@@ -56,10 +56,10 @@ public class TimeLine extends Thread{
 
     @Override
     public void run() {
-        globalListener.onAction(new Event(EventType.StartupEvent));
+        globalBroadcast.onAction(new Event(EventType.StartupEvent));
         long counter = 0;
         while(flag){
-            globalListener.onAction(new Event(EventType.LoopEvent));
+            globalBroadcast.onAction(new Event(EventType.LoopEvent));
             for(Pair<LoopOperation, Integer> entry: operations){
                 if(counter % entry.getValue() == 0)
                     entry.getKey().operation();

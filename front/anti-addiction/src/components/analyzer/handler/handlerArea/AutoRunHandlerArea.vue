@@ -6,25 +6,24 @@ const prop = defineProps({
     index:Number
 })
 
-const listenerList = inject('listenerList')
+const handlerList = inject('handlerList')
 const deleteHandler = inject('deleteHandler')
-const listenerData = listenerList.value[prop.index]
+const handlerData = handlerList.value[prop.index]
 
 </script>
 
 <template>
     <div class="main">
-        <handler-label :name="listenerData.handler.simplifiedName" @deleteHandler="deleteHandler(index)"/>
+        <handler-label :name="handlerData[0]" @deleteHandler="deleteHandler(index)"/>
         <div class="content">
-            <div class="name">&nbsp;&nbsp;&nbsp;&nbsp;{{listenerData.handler.path.split("/")[listenerData.handler.path.split("/").length-1]}}</div>
-            <div class="path">&nbsp;&nbsp;&nbsp;&nbsp;{{ listenerData.handler.path}}</div>
+            <div class="type">&nbsp;&nbsp;&nbsp;&nbsp;{{handlerData[1]}}</div>
+            <div class="uri">&nbsp;&nbsp;&nbsp;&nbsp;{{ handlerData[2]}}</div>
         </div>
     </div>
 </template>
 
 <style scoped>
-
-.name{
+.type{
     height: 10vh;
     line-height: 10vh;
     text-align: center;
@@ -32,10 +31,10 @@ const listenerData = listenerList.value[prop.index]
     font-size: 200%;
     color:burlywood
 }
-.path{
+.uri{
     text-align: center;
     color:burlywood;
-    font-size: 110%;
+    font-size: 100%;
     font-weight: 100;
 }
 </style>

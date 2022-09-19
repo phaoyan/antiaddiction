@@ -7,20 +7,20 @@ const prop = defineProps({
     index:Number
 })
 
-const listenerList = inject('listenerList')
+const handlerList = inject('handlerList')
 const deleteHandler = inject('deleteHandler')
-const listenerData = listenerList.value[prop.index]
+const handlerData = handlerList.value[prop.index]
 
 </script>
 
 <template>
     <div class="main">
-        <handler-label :name= listenerData.handler.simplifiedName @deleteHandler="deleteHandler(index)"/>
+        <handler-label :name= handlerData.handler.name @deleteHandler="deleteHandler(index)"/>
         <div class="urls">
             <div class="content">from:</div>
-            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{listenerData.handler.sourceUrl}}</div>
+            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{handlerData.handler.sourceUrl}}</div>
             <div class="content">to:</div>
-            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{ listenerData.handler.targetUrl}}</div>
+            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{ handlerData.handler.targetUrl}}</div>
         </div>
     </div>
 </template>

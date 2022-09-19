@@ -82,7 +82,7 @@ const display = (data)=>{
     if(data.processName != undefined){
         // console.log(data.processName)
         return data.processName
-    }else if(data.url != undefined){
+    }else if(data.urlWithoutParams != undefined){
         // console.log(data.url)
         return data.urlWithoutParams
     }

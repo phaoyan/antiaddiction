@@ -1,4 +1,6 @@
 package pers.juumii.antiaddiction.model.pattern.handler.impl;
 
+public interface ImplUnit {
 
-public abstract class RunImpl implements ImplUnit { }
+    void handle();
+}

@@ -19,14 +19,12 @@ public class ComputerScreenDataCollector implements ComputerDataCollector{
 
     @Value("${computerScreenShotScale}")
     private double scale;
-    @Autowired
-    private Paths paths;
     private ComputerScreenDataCollector(){}
     @Override
     public Environment collect() {
         try {
             ComputerEnvironment res = new ComputerEnvironment();
-            File src = new File(paths.getScreenSrc() + "/" + LocalDateTime.now().toString().split("\\.")[0].replace(':','-') + ".jpg");
+            File src = new File(Paths.getScreenSrc() + "/" + LocalDateTime.now().toString().split("\\.")[0].replace(':','-') + ".jpg");
             if(!src.exists())
                 src.createNewFile();
             ComputerScreenData data = new ComputerScreenData(src.toString());

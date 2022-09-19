@@ -3,7 +3,6 @@ package pers.juumii.antiaddiction.model.environment.collector;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 import pers.juumii.antiaddiction.model.util.Paths;
@@ -18,15 +17,13 @@ import java.util.List;
 @Repository
 public class IgnoreList {
 
-    @Autowired
-    private Paths paths;
     private List<String> ignoreList;
 
     @PostConstruct
     public void init(){
         try {
             ignoreList = new ArrayList<>();
-            File src = new File(paths.getIgnoreListSrc());
+            File src = new File(Paths.getIgnoreListSrc());
             JsonArray ignoreItems = AdaptedGsonProvider.getGsonWithDeserializeAdapter().fromJson(FileUtils.readFileToString(src, StandardCharsets.UTF_8), JsonArray.class);
             for(JsonElement item: ignoreItems)
                 ignoreList.add(item.getAsString());
@@ -45,7 +42,7 @@ public class IgnoreList {
 
     private void toFile() {
         try {
-            FileUtils.writeStringToFile(new File(paths.getIgnoreListSrc()),AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(ignoreList), StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(Paths.getIgnoreListSrc()),AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(ignoreList), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -2,7 +2,7 @@ package pers.juumii.antiaddiction.model.util;
 
 import com.google.gson.*;
 import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
-import pers.juumii.antiaddiction.model.pattern.handler.impl.BehaviorHandler;
+import pers.juumii.antiaddiction.model.pattern.handler.impl.ImplUnit;
 import pers.juumii.antiaddiction.model.pattern.handler.impl.WebsiteRedirectionImpl;
 import pers.juumii.antiaddiction.model.pattern.pattern.BehaviorPattern;
 
@@ -37,7 +37,7 @@ public class AdaptedGsonProvider {
         //各个数据接口的反序列化适配器
         addInterfaceDeserializer(EnvironmentData.class, builder);
         addInterfaceDeserializer(BehaviorPattern.class, builder);
-        addInterfaceDeserializer(BehaviorHandler.class, builder);
+        addInterfaceDeserializer(ImplUnit.class, builder);
 
         return builder.create();
     }

@@ -7,26 +7,26 @@ import HandlerListPanel from "./HandlerListPanel.vue"
 const selectedPattern = ref(null)
 const selectedIndex = ref(-1)
 const patternList = ref()
-const listenerList = ref()
+const handlerList = ref()
 provide('selectedPattern', selectedPattern)
 provide('selectedIndex',selectedIndex)
 provide('patternList',patternList)
-provide('listenerList',listenerList)
+provide('handlerList',handlerList)
 
 const getPatternList = async ()=>{
     axios.get("http://localhost:8080/pattern/list").then(e=>{
         patternList.value = e.data
     })
 }
-const getListenerList = async ()=>{
-    axios.get("http://localhost:8080/listenerList").then(e=>{
-        listenerList.value = e.data
+const gethandlerList = async ()=>{
+    axios.get("http://localhost:8080/handler/list").then(e=>{
+        handlerList.value = e.data
     })
 }
 
 const init = async ()=>{
     getPatternList()
-    getListenerList()
+    gethandlerList()
 }
 init()
 

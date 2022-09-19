@@ -1,44 +1,42 @@
 package pers.juumii.antiaddiction.model.pattern.handler.event;
 
-import pers.juumii.antiaddiction.model.pattern.handler.impl.BehaviorHandler;
+import pers.juumii.antiaddiction.model.pattern.handler.impl.ImplUnit;
 
 public class EventListener{
     public final String className = getClass().getName();
     public final String simplifiedName = "event listener";
 
-    private EventType accept;
-    private BehaviorHandler handler;
+    private Event accept;
+    private ImplUnit implUnit;
 
-    public EventListener() {
-    }
-
-    public EventListener(EventType accept) {
+    public EventListener() {}
+    public EventListener(Event accept) {
         this.accept = accept;
     }
 
-    public EventListener(BehaviorHandler handler) {
-        this.handler = handler;
+    public EventListener(ImplUnit implUnit) {
+        this.implUnit = implUnit;
     }
 
-    public EventListener(EventType accept, BehaviorHandler handler) {
+    public EventListener(Event accept, ImplUnit implUnit) {
         this.accept = accept;
-        this.handler = handler;
+        this.implUnit = implUnit;
     }
 
-    public EventType getAccept() {
+    public Event getAccept() {
         return accept;
     }
 
-    public void setAccept(EventType accept) {
+    public void setAccept(Event accept) {
         this.accept = accept;
     }
 
-    public BehaviorHandler getHandler() {
-        return handler;
+    public ImplUnit getImplUnit() {
+        return implUnit;
     }
 
-    public void setHandler(BehaviorHandler handler) {
-        this.handler = handler;
+    public void setImplUnit(ImplUnit implUnit) {
+        this.implUnit = implUnit;
     }
 
     public String getClassName(){
@@ -48,7 +46,7 @@ public class EventListener{
         return simplifiedName;
     }
     public void onAction(Event event){
-        if(event.getEventType().equals(this.accept))
-            handler.handle(event);
+        if(event.equals(this.accept))
+            implUnit.handle();
     }
 }

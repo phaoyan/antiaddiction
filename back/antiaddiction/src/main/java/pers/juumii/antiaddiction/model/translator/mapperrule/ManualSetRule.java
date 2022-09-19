@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.behavior.MomentaryBehavior;
 import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
@@ -23,14 +22,12 @@ import java.util.ArrayList;
 @Service
 public class ManualSetRule implements MapperRule{
 
-    @Autowired
-    private Paths paths;
     private ArrayList<MomentaryBehavior> mapperBehaviorList;
 
     @PostConstruct
     public void init(){
         try {
-            File src = new File(paths.getManualSetRuleSrc());
+            File src = new File(Paths.getManualSetRuleSrc());
             if(!src.exists())
                 src.createNewFile();
             mapperBehaviorList = new ArrayList<>();
@@ -45,7 +42,7 @@ public class ManualSetRule implements MapperRule{
     }
 
     public void toFile(){
-        File src = new File(paths.getManualSetRuleSrc());
+        File src = new File(Paths.getManualSetRuleSrc());
         try {
             FileUtils.writeStringToFile(src, AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(mapperBehaviorList), StandardCharsets.UTF_8);
         } catch (IOException e) {

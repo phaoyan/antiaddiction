@@ -2,7 +2,6 @@ package pers.juumii.antiaddiction.model.environment.collector;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
 import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
@@ -25,15 +24,13 @@ public class DataListCollector{
     private OverallEnvironment environment = new OverallEnvironment();
     @Autowired
     IgnoreList ignoreList;
-    @Autowired
-    private Paths paths;
 
     private DataListCollector(){}
 
     @PostConstruct
     public void init(){
         try {
-            File src = new File(paths.getDataListSrc());
+            File src = new File(Paths.getDataListSrc());
             if(!src.exists()) {
                 src.createNewFile();
             }
@@ -46,7 +43,7 @@ public class DataListCollector{
 
     public void setEnvironment() {
         try {
-            OverallEnvironment environment = AdaptedGsonProvider.getGsonWithDeserializeAdapter().fromJson(FileUtils.readFileToString(new File(paths.getDataListSrc()), StandardCharsets.UTF_8), OverallEnvironment.class);
+            OverallEnvironment environment = AdaptedGsonProvider.getGsonWithDeserializeAdapter().fromJson(FileUtils.readFileToString(new File(Paths.getDataListSrc()), StandardCharsets.UTF_8), OverallEnvironment.class);
             this.environment = environment == null ? this.environment : environment;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -64,7 +61,7 @@ public class DataListCollector{
             if(!idCodes.contains(data.getIdCode()) && !(data instanceof ComputerScreenData))
                 this.environment.getDatum().add(data);
         try {
-            FileUtils.writeStringToFile(new File(paths.getDataListSrc()),AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(Paths.getDataListSrc()),AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -77,7 +74,7 @@ public class DataListCollector{
             for(String s: ignoreList.getIgnoreList()){
                 environment.getDatum().removeIf(data-> data.getIdCode() == s.hashCode());
             }
-            FileUtils.writeStringToFile(new File(paths.getDataListSrc()),AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(Paths.getDataListSrc()),AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(this.environment),StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

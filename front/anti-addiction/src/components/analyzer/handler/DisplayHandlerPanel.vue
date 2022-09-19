@@ -5,7 +5,7 @@ import CeaseComputerProcessHandlerArea from "./handlerArea/CeaseComputerProcessH
 import WebsiteRedirectionHandlerArea from "./handlerArea/WebsiteRedirectionHandlerArea.vue"
 import AutoRunHandlerArea from "./handlerArea/AutoRunHandlerArea.vue"
 
-const listenerList = inject('listenerList')
+const handlerList = inject('handlerList')
 const update = inject('update')
 
 const deleteHandler = async (index)=>{
@@ -24,23 +24,20 @@ provide('deleteHandler', deleteHandler)
 <template>
     <el-scrollbar height="72vh">
         <el-table
-        :data="listenerList"
+        :data="handlerList"
         :show-header="false">
             <el-table-column>
                 <template v-slot="scope">
                     <el-scrollbar height="20vh">
                         <cease-computer-process-handler-area 
-                        v-if="listenerList[scope.$index].handler != null && listenerList[scope.$index].handler.simplifiedName == 'cease computer process'"
+                        v-if="handlerList[scope.$index][0] == 'Cease Computer Process'"
                         :index="scope.$index"/>
                         <website-redirection-handler-area 
-                        v-if="listenerList[scope.$index].handler != null && listenerList[scope.$index].handler.simplifiedName == 'limit website access'"
+                        v-if="handlerList[scope.$index][0] == 'Website Redirection'"
                         :index="scope.$index"/>
                         <auto-run-handler-area
-                        v-if="listenerList[scope.$index].handler != null && listenerList[scope.$index].handler.simplifiedName == 'run computer process'"
+                        v-if="handlerList[scope.$index][0] == 'Auto Run'"
                         :index="scope.$index"/>
-                        <div class="empty" v-if="listenerList[scope.$index].handler == null">
-                                no handler
-                        </div>
                     </el-scrollbar>
                 </template>
             </el-table-column>

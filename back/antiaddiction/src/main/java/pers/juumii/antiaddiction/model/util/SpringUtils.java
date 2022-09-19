@@ -3,7 +3,6 @@ package pers.juumii.antiaddiction.model.util;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Component;
 
 @Component

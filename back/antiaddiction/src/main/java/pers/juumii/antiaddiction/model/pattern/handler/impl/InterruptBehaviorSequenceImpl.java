@@ -4,26 +4,21 @@ package pers.juumii.antiaddiction.model.pattern.handler.impl;
 import com.google.gson.JsonElement;
 import pers.juumii.antiaddiction.model.behavior.BehaviorHistory;
 import pers.juumii.antiaddiction.model.behavior.TimedBehavior;
-import pers.juumii.antiaddiction.model.pattern.handler.event.Event;
 import pers.juumii.antiaddiction.model.util.SpringUtils;
 
 import java.time.Duration;
 
-public class InterruptBehaviorSequenceImpl implements BehaviorHandler {
+public class InterruptBehaviorSequenceImpl implements ImplUnit {
 
     public final String className = getClass().getName();
     public final String simplifiedName = "interrupt behavior sequence";
 
     private BehaviorHistory behaviorHistory;
-    private BehaviorHandler handler;
+    private ImplUnit handler;
     private TimedBehavior former, latter;
     private int interval;
 
     public InterruptBehaviorSequenceImpl(){}
-
-    public InterruptBehaviorSequenceImpl(JsonElement json){
-        init(json);
-    }
 
     public TimedBehavior getFormer() {
         return former;
@@ -49,31 +44,26 @@ public class InterruptBehaviorSequenceImpl implements BehaviorHandler {
         this.interval = interval;
     }
 
-    public BehaviorHandler getHandler() {
+    public ImplUnit getHandler() {
         return handler;
     }
 
-    public void setHandler(BehaviorHandler handler) {
+    public void setHandler(ImplUnit handler) {
         this.handler = handler;
     }
 
-    @Override
+
     public String getClassName() {
         return className;
     }
 
-    @Override
+
     public String getSimplifiedName() {
         return simplifiedName;
     }
 
     @Override
-    public void init(JsonElement json) {
-
-    }
-
-    @Override
-    public void handle(Event event) {
+    public void handle() {
         if(former == null || latter == null)
             return;
         if(behaviorHistory == null)
@@ -86,7 +76,7 @@ public class InterruptBehaviorSequenceImpl implements BehaviorHandler {
             latter.setStartTime(last.getStartTime());
 
         if(Duration.between(former.getEndTime(),latter.getStartTime()).getNano() < interval)
-            handler.handle(event);
+            handler.handle();
     }
 
 

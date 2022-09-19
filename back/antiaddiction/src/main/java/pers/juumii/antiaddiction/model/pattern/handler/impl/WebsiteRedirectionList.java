@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 import pers.juumii.antiaddiction.model.util.Paths;
@@ -19,8 +18,6 @@ import java.util.List;
 @Repository
 public class WebsiteRedirectionList {
 
-    @Autowired
-    private Paths paths;
 
     private List<String> websiteRedirectionList;
 
@@ -32,7 +29,7 @@ public class WebsiteRedirectionList {
     private void readFile() {
         try{
             websiteRedirectionList = new ArrayList<>();
-            File src = new File(paths.getWebsiteRedirectionListSrc());
+            File src = new File(Paths.getWebsiteRedirectionListSrc());
             if(!src.exists())
                 src.createNewFile();
             String jsonString = FileUtils.readFileToString(src, StandardCharsets.UTF_8);
@@ -48,7 +45,7 @@ public class WebsiteRedirectionList {
 
     private void toFile() {
         try {
-            FileUtils.writeStringToFile(new File(paths.getWebsiteRedirectionListSrc()), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(websiteRedirectionList),StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(Paths.getWebsiteRedirectionListSrc()), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(websiteRedirectionList),StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

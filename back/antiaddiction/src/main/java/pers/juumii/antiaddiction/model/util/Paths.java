@@ -1,69 +1,58 @@
 package pers.juumii.antiaddiction.model.util;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class Paths {
 
-    @Value("${staticPrefix}")
-    private String staticPrefix;
-    @Value("${behaviorHistoryRoot}")
-    private String behaviorHistoryRoot;
-    @Value("${dataListSrc}")
-    private String dataListSrc;
-    @Value("${ignoreListSrc}")
-    private String ignoreListSrc;
-    @Value("${patternListSrc}")
-    private String patternListSrc;
-    @Value("${manualSetRuleSrc}")
-    private String manualSetRuleSrc;
-    @Value("${screenSrc}")
-    private String screenSrc;
-    @Value("${globalListenerSrc}")
-    private String globalListenerSrc;
-    @Value("${websiteRedirectionListSrc}")
-    private String websiteRedirectionListSrc;
-    @Value("${batSrc}")
-    private String batSrc;
 
-    public String getStaticPrefix() {
+    private static String absolutePrefix = "D:/coding/projects/applicationProjects/antiaddiction/";
+
+    private static String staticPrefix = "src/main/resources/static/";
+
+    public static String getAbsolutePrefix() {
+        return absolutePrefix;
+    }
+    public static String getAbsoluteSrc(String src){
+        return absolutePrefix + src;
+    }
+    public static String getStaticPrefix() {
         return staticPrefix;
     }
-
-    public String getBehaviorHistoryRoot() {
-        return staticPrefix + behaviorHistoryRoot;
+    public static String getBehaviorHistoryRoot() {
+        return staticPrefix + "json/history";
     }
 
-    public String getDataListSrc() {
-        return staticPrefix + dataListSrc;
+    public static String getDataListSrc() {
+        return staticPrefix + "json/dataList.json";
     }
 
-    public String getIgnoreListSrc() {
-        return staticPrefix + ignoreListSrc;
+    public static String getIgnoreListSrc() {
+        return staticPrefix + "json/ignore.json";
     }
-
-    public String getPatternListSrc() {
-        return staticPrefix + patternListSrc;
+    public static String getPatternListSrc() {
+        return staticPrefix + "json/patternList.json";
     }
-
-    public String getManualSetRuleSrc() {
-        return staticPrefix + manualSetRuleSrc;
+    public static String getManualSetRuleSrc() {
+        return staticPrefix + "json/manualSetRule.json";
     }
-
-    public String getScreenSrc() {
-        return staticPrefix + screenSrc;
+    public static String getScreenSrc() {
+        return staticPrefix + "img/screen";
     }
-
-    public String getGlobalListenerSrc() {
-        return staticPrefix + globalListenerSrc;
+    public static String getWebsiteRedirectionListSrc() {
+        return staticPrefix + "json/websiteRedirectionList.json";
     }
-
-    public String getWebsiteRedirectionListSrc() {
-        return staticPrefix + websiteRedirectionListSrc;
+    public static String getHandlerListSrc(){
+        return staticPrefix + "json/handlerList.json";
     }
-
-    public String getBatSrc() {
-        return staticPrefix + batSrc;
+    public static String getBatSrc() {
+        return staticPrefix + "bat/temp.bat";
     }
+    public static String getStartupBatSrc() {
+        return staticPrefix + "bat/startup.bat";
+    }
+    public static String getJsonSchemaPrefix() {
+        return staticPrefix + "json/schema/";
+    }
+    public static String getAutoRunHandlerSchemaSrc(){return getJsonSchemaPrefix() + "autoRunHandler.json";}
+    public static String getCeaseComputerProcessHandlerSchemaSrc(){return getJsonSchemaPrefix() + "ceaseComputerProcessHandler.json";}
+    public static String getWebsiteRedirectionHandlerSchemaSrc(){return getJsonSchemaPrefix() + "websiteRedirectionHandler.json";}
 }

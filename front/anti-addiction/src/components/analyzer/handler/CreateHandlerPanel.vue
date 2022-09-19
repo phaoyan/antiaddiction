@@ -1,9 +1,12 @@
 <script setup>
 import {inject, provide, ref} from "vue"
 import axios from "axios"
-import CreateCeaseComputerProcessHandlerPanel from "./createHandlers/CreateCeaseComputerProcessHandlerPanel.vue"
-import CreateWebsiteRedirectionHandlerPanel from "./createHandlers/CreateWebsiteRedirectionHandlerPanel.vue"
-import CreateAutoRunHandlerPanel from "./createHandlers/CreateAutoRunHandlerPanel.vue"
+import VueForm from "@lljj/vue3-form-element"
+import ceaseComputerProcessHandlerSchema from "@/assets/json/schema/handler/ceaseComputerProcessHandler.json"
+import websiteRedirectionHandlerSchema from "@/assets/json/schema/handler/websiteRedirectionHandler.json"
+import autoRunHandlerSchema from "@/assets/json/schema/handler/AutoRunHandler.json"
+import footer from "@/assets/json/schema/ui/formFooter.json"
+
 
 const patternData = inject('selectedPattern')
 const index = inject('selectedIndex')
@@ -35,31 +38,23 @@ const options = ref([
         ]
     },
     {
-        value:"auto run computer process",
-        label:"auto run computer process"
+        value:"auto run",
+        label:"auto run"
     }
 ])
 const option = ref(['default'])
 
-const getHandlerOriginal = async (simplifiedName)=>{
-    let handler
-    await axios.get("http://localhost:8080/handler/original",{params:{simplifiedName:simplifiedName}}).then(e=>{
-        handler = e.data
-    })
-
-    return handler
-}
-const postHandler = async (handler, event)=>{
+const handler = ref({})
+const postHandler = async (handler,schema)=>{
     let json = {
-        index:index.value,
-        handler:handler
+        handler:handler,
+        schema:schema
     }
-    await axios.post("http://localhost:8080/handler/assign/" + event,json)
+    await axios.post("http://localhost:8080/handler/create",json)
     patternData.value = null
     update.value = !update.value
+    console.log("test")
 }
-provide('getHandlerOriginal', getHandlerOriginal)
-provide('postHandler', postHandler)
 
 </script>
 
@@ -72,11 +67,26 @@ provide('postHandler', postHandler)
             placeholder="select a handler"
             :show-all-levels="false"/>
         </div>
-        <create-cease-computer-process-handler-panel v-if="option[option.length-1]=='cease computer process'"/>
-        <create-website-redirection-handler-panel v-if="option[option.length-1]=='limit website access'"/>
-        <create-auto-run-handler-panel v-if="option[option.length-1]=='auto run computer process'"/>
-
     </div>
+    <vue-form
+    v-if="option[option.length-1]=='cease computer process'"
+    v-model="handler"
+    :schema="ceaseComputerProcessHandlerSchema"
+    :formFooter="footer"
+    @submit="postHandler(handler, ceaseComputerProcessHandlerSchema)"/>
+    <vue-form
+    v-if="option[option.length-1]=='limit website access'"
+    v-model="handler"
+    :schema="websiteRedirectionHandlerSchema"
+    :formFooter="footer"
+    @submit="postHandler(handler, websiteRedirectionHandlerSchema)"/>
+    <vue-form
+    v-if="option[option.length-1]=='auto run'"
+    v-model="handler"
+    :schema="autoRunHandlerSchema"
+    :formFooter="footer"
+    @submit="postHandler(handler, autoRunHandlerSchema)"/>
+
     
 </template>
 

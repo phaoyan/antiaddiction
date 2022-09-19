@@ -18,7 +18,9 @@ const update = (realDate)=>{
 <template>
     <el-scrollbar :height="visibleHeight + 'vh'">
         <el-container id="container">
-            <el-aside id="aside"></el-aside>
+            <el-aside id="aside">
+                
+            </el-aside>
             <el-main id="main">
                 <div id="header">
                     <div class="first-row">

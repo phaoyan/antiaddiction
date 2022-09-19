@@ -19,8 +19,6 @@ import java.util.ArrayList;
 @Repository
 public class PatternList {
     private ArrayList<BehaviorPattern> patterns;
-    @Autowired
-    private Paths paths;
 
     @PostConstruct
     public void init(){
@@ -54,7 +52,7 @@ public class PatternList {
 
     public void readFile(){
         try {
-            JsonArray json = new Gson().fromJson(FileUtils.readFileToString(new File(paths.getPatternListSrc()), StandardCharsets.UTF_8), JsonArray.class);
+            JsonArray json = new Gson().fromJson(FileUtils.readFileToString(new File(Paths.getPatternListSrc()), StandardCharsets.UTF_8), JsonArray.class);
             patterns = new ArrayList<>();
             setPatterns(json);
 
@@ -67,7 +65,7 @@ public class PatternList {
 
     public void toFile(){
         try {
-            FileUtils.writeStringToFile(new File(paths.getPatternListSrc()), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(patterns), StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(Paths.getPatternListSrc()), AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(patterns), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

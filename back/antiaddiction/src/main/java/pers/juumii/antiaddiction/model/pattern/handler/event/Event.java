@@ -1,6 +1,8 @@
 package pers.juumii.antiaddiction.model.pattern.handler.event;
 
 
+import com.google.gson.JsonElement;
+
 public class Event {
     private Object source;
     private EventType eventType;
@@ -10,11 +12,12 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public Event(EventType eventType) {
-        this.eventType = eventType;
+    public Event(Object source) {
+        this.source = source;
     }
 
-    public Event() {
+    public Event(EventType eventType) {
+        this.eventType = eventType;
     }
 
     public Object getSource() {
@@ -30,5 +33,12 @@ public class Event {
 
     public void setEventType(EventType eventType) {
         this.eventType = eventType;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Event
+                && (((Event)obj).getEventType() == null || ((Event)obj).getEventType().equals(eventType) )
+                && (((Event) obj).getSource() == null || ((Event) obj).getSource().equals(source));
     }
 }

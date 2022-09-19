@@ -1,7 +1,6 @@
 package pers.juumii.antiaddiction.model.util;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.SpringConfig;
@@ -9,20 +8,18 @@ import pers.juumii.antiaddiction.SpringConfig;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Service
 public class CMD {
 
-    @Autowired
-    private Paths paths;
-
     public void exec(String cmd){
         try {
-            File file = new File(paths.getBatSrc());
+            File file = new File(Paths.getBatSrc());
             if(!file.exists())
                 file.createNewFile();
             FileUtils.writeStringToFile(file, cmd, StandardCharsets.UTF_8);
-            Runtime.getRuntime().exec(paths.getBatSrc());
+            Runtime.getRuntime().exec(Paths.getBatSrc());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -50,9 +47,37 @@ public class CMD {
 
     }
 
-    public static void main(String[] args) {
+    public void addLastLineToBat(String path, String line) throws IOException {
+        List<String> lines = FileUtils.readLines(new File(path),StandardCharsets.UTF_8);
+        lines.add(line);
+        FileUtils.writeLines(new File(path), lines);
+    }
+
+    public void removeLastLineFromBat(String path) throws IOException {
+        List<String> lines = FileUtils.readLines(new File(path),StandardCharsets.UTF_8);
+        lines.remove(lines.size()-1);
+        FileUtils.writeLines(new File(path), lines);
+    }
+
+    public void temporallyAddLineAndRun(String src, String line){
+        try {
+            addLastLineToBat(src, line);
+            Thread.sleep(3000);
+            exec(src);
+            Thread.sleep(3000);
+            removeLastLineFromBat(src);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static void main(String[] args) throws IOException {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
         CMD cmd = ctx.getBean(CMD.class);
-        cmd.run("D:\\games\\Genshin Impact\\launcher.exe");
+        String path = "D:\\coding\\projects\\applicationProjects\\antiaddiction\\back\\antiaddiction\\src\\main\\resources\\static\\bat\\startup.bat";
+        cmd.addLastLineToBat(path, "test");
+        cmd.removeLastLineFromBat(path);
+
     }
 }
