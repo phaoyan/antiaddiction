@@ -4,6 +4,7 @@ import axios from "axios"
 import CeaseComputerProcessHandlerArea from "./handlerArea/CeaseComputerProcessHandlerArea.vue"
 import WebsiteRedirectionHandlerArea from "./handlerArea/WebsiteRedirectionHandlerArea.vue"
 import AutoRunHandlerArea from "./handlerArea/AutoRunHandlerArea.vue"
+import GuidanceHandlerArea from "./handlerArea/GuidanceHandlerArea.vue"
 
 const handlerList = inject('handlerList')
 const update = inject('update')
@@ -37,6 +38,9 @@ provide('deleteHandler', deleteHandler)
                         :index="scope.$index"/>
                         <auto-run-handler-area
                         v-if="handlerList[scope.$index][0] == 'Auto Run'"
+                        :index="scope.$index"/>
+                        <guidance-handler-area 
+                        v-if="handlerList[scope.$index][0] == 'Guide'"
                         :index="scope.$index"/>
                     </el-scrollbar>
                 </template>

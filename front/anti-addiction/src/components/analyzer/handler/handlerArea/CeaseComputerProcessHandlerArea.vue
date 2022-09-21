@@ -14,9 +14,9 @@ const handlerData = handlerList.value[prop.index]
 
 <template>
     <div class="main">
-        <handler-label :name="handlerData.handler.name" @deleteHandler="deleteHandler(index)"/>
+        <handler-label :name="handlerData[0]" @deleteHandler="deleteHandler(index)"/>
         <div class="content">
-            {{handlerData.handler.target.processName}}
+            {{handlerData[1]}}
         </div>
     </div>
 </template>

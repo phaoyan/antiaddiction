@@ -3,14 +3,10 @@ package pers.juumii.antiaddiction.model.pattern.handler.handler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Repository;
-import pers.juumii.antiaddiction.SpringConfig;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 import pers.juumii.antiaddiction.model.util.Paths;
-import pers.juumii.antiaddiction.model.util.SpringUtils;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -23,9 +19,9 @@ public class HandlerList {
 
     private List<BehaviorHandler> handlerList;
 
-    @PostConstruct
     public void init(){
-        readFile();
+        if(handlerList == null)
+            readFile();
     }
 
     public void toFile(){
@@ -49,14 +45,14 @@ public class HandlerList {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
     public List<BehaviorHandler> getHandlerList() {
+        init();
         return handlerList;
     }
 
     public void add(BehaviorHandler handler){
+        init();
         if(handlerList == null)
             handlerList = new ArrayList<>();
         handlerList.add(handler);
@@ -64,7 +60,7 @@ public class HandlerList {
     }
 
     public void remove(int index) {
-
+        init();
         handlerList.remove(index);
         toFile();
     }

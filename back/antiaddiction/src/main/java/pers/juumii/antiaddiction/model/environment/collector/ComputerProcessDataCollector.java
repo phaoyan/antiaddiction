@@ -6,6 +6,7 @@ import pers.juumii.antiaddiction.model.environment.environment.Environment;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerEnvironment;
 import pers.juumii.antiaddiction.model.environment.environment.cptenviroment.ComputerProcess;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 
 @Service
 public class ComputerProcessDataCollector implements ComputerDataCollector{
-
 
     private ArrayList<String> getProcessLines(){
         ArrayList<String> res = new ArrayList<>();

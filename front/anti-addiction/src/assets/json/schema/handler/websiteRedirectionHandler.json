@@ -1,7 +1,7 @@
 {
     "type":"object",
     "properties":{
-        "sourcesUrl":{
+        "sourceUrl":{
             "title":"source url",
             "type":"string",
             "format":"uri"

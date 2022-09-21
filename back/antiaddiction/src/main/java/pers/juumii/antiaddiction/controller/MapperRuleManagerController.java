@@ -1,40 +1,23 @@
 package pers.juumii.antiaddiction.controller;
 
 import com.google.gson.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.juumii.antiaddiction.model.translator.mapperrule.ManualSetRule;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
+import pers.juumii.antiaddiction.model.util.SpringUtils;
 
-import javax.annotation.PostConstruct;
 
 @CrossOrigin
 @RestController
 public class MapperRuleManagerController {
-    private static MapperRuleManagerController first;
-    public static boolean isFirst(MapperRuleManagerController target){
-        if(first == null){
-            first = target;
-            return true;
-        }
-        return first == target;
-    }
-    public static void pointToFirst(MapperRuleManagerController target){
-        target.manualSetRule = first.manualSetRule;
-    }
-    @PostConstruct
-    public void init(){
-        if(!isFirst(this))
-            pointToFirst(this);
-    }
-    @Autowired
-    private ManualSetRule manualSetRule;
     @PostMapping("/behavior/registered")
     public void postRegisteredBehaviorList(@RequestBody String jsonString){
+        ManualSetRule manualSetRule = SpringUtils.getBean(ManualSetRule.class);
         manualSetRule.setMapperBehaviorList(new Gson().fromJson(jsonString, JsonArray.class));
     }
     @GetMapping("/behavior/registered")
     public String getMapperBehaviorList(){
+        ManualSetRule manualSetRule = SpringUtils.getBean(ManualSetRule.class);
         return AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(manualSetRule.getMapperBehaviorList());
     }
 

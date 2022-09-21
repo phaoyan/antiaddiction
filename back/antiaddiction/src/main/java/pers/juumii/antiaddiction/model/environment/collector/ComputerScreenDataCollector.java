@@ -1,6 +1,5 @@
 package pers.juumii.antiaddiction.model.environment.collector;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.environment.environment.Environment;
@@ -14,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+
 @Service
 public class ComputerScreenDataCollector implements ComputerDataCollector{
 

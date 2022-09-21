@@ -2,15 +2,18 @@
 import {inject, provide, ref} from "vue"
 import axios from "axios"
 import VueForm from "@lljj/vue3-form-element"
-import ceaseComputerProcessHandlerSchema from "@/assets/json/schema/handler/ceaseComputerProcessHandler.json"
-import websiteRedirectionHandlerSchema from "@/assets/json/schema/handler/websiteRedirectionHandler.json"
-import autoRunHandlerSchema from "@/assets/json/schema/handler/AutoRunHandler.json"
 import footer from "@/assets/json/schema/ui/formFooter.json"
-
 
 const patternData = inject('selectedPattern')
 const index = inject('selectedIndex')
 const update = inject('update')
+
+const autoRunHandlerSchema = ref()
+const websiteRedirectionHandlerSchema = ref()
+const ceaseComputerProcessHandlerSchema = ref()
+const guidanceHandlerSchema = ref()
+
+
 
 const options = ref([
     {
@@ -40,6 +43,10 @@ const options = ref([
     {
         value:"auto run",
         label:"auto run"
+    },
+    {
+        value:"guidance",
+        label:"guidance"
     }
 ])
 const option = ref(['default'])
@@ -53,8 +60,22 @@ const postHandler = async (handler,schema)=>{
     await axios.post("http://localhost:8080/handler/create",json)
     patternData.value = null
     update.value = !update.value
-    console.log("test")
 }
+
+const getSchema = async(name)=>{
+    let res
+    await axios.get("http://localhost:8080/handler/schema?name="+name).then((e)=>{
+        res = e.data
+    })
+    return res
+}
+
+getSchema("ceaseComputerProcessHandler.json").then(e=>ceaseComputerProcessHandlerSchema.value = e)
+getSchema("websiteRedirectionHandler.json").then(e=>websiteRedirectionHandlerSchema.value = e)
+getSchema("autoRunHandler.json").then(e=>autoRunHandlerSchema.value = e)
+getSchema("guidanceHandler.json").then(e=>guidanceHandlerSchema.value = e)
+
+
 
 </script>
 
@@ -86,6 +107,12 @@ const postHandler = async (handler,schema)=>{
     :schema="autoRunHandlerSchema"
     :formFooter="footer"
     @submit="postHandler(handler, autoRunHandlerSchema)"/>
+    <vue-form
+    v-if="option[option.length-1]=='guidance'"
+    v-model="handler"
+    :schema="guidanceHandlerSchema"
+    :formFooter="footer"
+    @submit="postHandler(handler, guidanceHandlerSchema)"/>
 
     
 </template>

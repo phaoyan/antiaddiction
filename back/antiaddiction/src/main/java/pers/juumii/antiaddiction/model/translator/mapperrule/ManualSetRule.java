@@ -4,12 +4,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
+import pers.juumii.antiaddiction.SpringConfig;
 import pers.juumii.antiaddiction.model.behavior.MomentaryBehavior;
 import pers.juumii.antiaddiction.model.environment.environment.EnvironmentData;
 import pers.juumii.antiaddiction.model.environment.environment.OverallEnvironment;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
 import pers.juumii.antiaddiction.model.util.Paths;
+import pers.juumii.antiaddiction.model.util.SpringUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -89,6 +92,10 @@ public class ManualSetRule implements MapperRule{
     @Override
     public ArrayList<MomentaryBehavior> getMapperBehaviorList() {
         return mapperBehaviorList;
+    }
+
+    public MomentaryBehavior getMapperBehaviorByName(String name){
+        return mapperBehaviorList.get(mapperBehaviorList.indexOf(new MomentaryBehavior(name)));
     }
 
 }

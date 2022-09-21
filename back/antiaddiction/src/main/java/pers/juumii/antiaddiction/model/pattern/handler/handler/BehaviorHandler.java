@@ -52,6 +52,8 @@ public class BehaviorHandler {
         listenerList.add(listener);
     }
 
-
-
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof BehaviorHandler && ((BehaviorHandler)obj).material.equals(material);
+    }
 }

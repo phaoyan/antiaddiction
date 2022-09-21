@@ -1,6 +1,9 @@
 package pers.juumii.antiaddiction.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import org.apache.commons.io.FileUtils;
 import org.springframework.web.bind.annotation.*;
 import pers.juumii.antiaddiction.model.pattern.handler.event.Event;
 import pers.juumii.antiaddiction.model.pattern.handler.event.EventType;
@@ -10,8 +13,10 @@ import pers.juumii.antiaddiction.model.pattern.handler.handler.HandlerCreator;
 import pers.juumii.antiaddiction.model.pattern.handler.handler.HandlerList;
 import pers.juumii.antiaddiction.model.util.*;
 
-import javax.swing.*;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 
 @CrossOrigin
 @RestController
@@ -44,5 +49,8 @@ public class HandlerController {
         return AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(jsonHandlerList);
     }
 
-
+    @GetMapping("handler/schema")
+    public String getHandlerSchema(@RequestParam String name) throws IOException {
+        return FileUtils.readFileToString(new File(Paths.getJsonSchemaPrefix() + name), StandardCharsets.UTF_8);
+    }
 }

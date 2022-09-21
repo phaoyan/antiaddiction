@@ -1,12 +1,9 @@
 package pers.juumii.antiaddiction.model.pattern.handler.impl;
 
-import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import pers.juumii.antiaddiction.SpringConfig;
-import pers.juumii.antiaddiction.model.util.CMD;
 import pers.juumii.antiaddiction.model.util.Paths;
-import pers.juumii.antiaddiction.model.util.SpringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +13,7 @@ import java.util.List;
 public class RemoveFromStartupBatImpl implements ImplUnit{
 
 
-    private String uri;
+    private final String uri;
     public RemoveFromStartupBatImpl(String uri) {
         this.uri = uri;
     }

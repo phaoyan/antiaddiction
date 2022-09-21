@@ -25,19 +25,9 @@ public class TimeLine extends Thread{
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
-
-    public long getUnit() {
-        return unit;
-    }
-
     public void setUnit(long unit) {
         this.unit = unit;
     }
-
-    public ArrayList<Pair<LoopOperation, Integer>> getOperations() {
-        return operations;
-    }
-
     public void setOperations(ArrayList<Pair<LoopOperation, Integer>> operations) {
         this.operations = operations;
     }

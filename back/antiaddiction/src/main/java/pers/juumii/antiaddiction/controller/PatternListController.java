@@ -3,37 +3,18 @@ package pers.juumii.antiaddiction.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.juumii.antiaddiction.model.pattern.PatternList;
 import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
+import pers.juumii.antiaddiction.model.util.SpringUtils;
 
-import javax.annotation.PostConstruct;
 
 @CrossOrigin
 @RestController
 public class PatternListController {
-
-    private static PatternListController first;
-    public static boolean isFirst(PatternListController target){
-        if(first == null){
-            first = target;
-            return true;
-        }
-        return first == target;
-    }
-    public static void pointToFirst(PatternListController target){
-        target.patternList = first.patternList;
-    }
-    @PostConstruct
-    public void init(){
-        if(!isFirst(this))
-            pointToFirst(this);
-    }
-    @Autowired
-    private PatternList patternList;
     @PostMapping("/pattern/list")
     public void postPatternList(@RequestBody String json){
+        PatternList patternList = SpringUtils.getBean(PatternList.class);
         try {
             if(json.getBytes()[0]=='[')
                 patternList.setPatterns(new Gson().fromJson(json, JsonArray.class));
@@ -45,6 +26,7 @@ public class PatternListController {
     }
     @GetMapping("/pattern/list")
     public String getPatternList(){
+        PatternList patternList = SpringUtils.getBean(PatternList.class);
         return AdaptedGsonProvider.getGsonWithSerializeAdapter().toJson(patternList.getPatterns());
     }
 }

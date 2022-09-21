@@ -4,9 +4,9 @@ package pers.juumii.antiaddiction.model.util;
 public class Paths {
 
 
-    private static String absolutePrefix = "D:/coding/projects/applicationProjects/antiaddiction/";
+    private static final String absolutePrefix = "D:/coding/projects/applicationProjects/antiaddiction/back/antiaddiction/";
 
-    private static String staticPrefix = "src/main/resources/static/";
+    private static final String staticPrefix = "src/main/resources/static/";
 
     public static String getAbsolutePrefix() {
         return absolutePrefix;
@@ -43,6 +43,9 @@ public class Paths {
     public static String getHandlerListSrc(){
         return staticPrefix + "json/handlerList.json";
     }
+    public static String getBatRoot(){
+        return staticPrefix + "bat/";
+    }
     public static String getBatSrc() {
         return staticPrefix + "bat/temp.bat";
     }
@@ -55,4 +58,7 @@ public class Paths {
     public static String getAutoRunHandlerSchemaSrc(){return getJsonSchemaPrefix() + "autoRunHandler.json";}
     public static String getCeaseComputerProcessHandlerSchemaSrc(){return getJsonSchemaPrefix() + "ceaseComputerProcessHandler.json";}
     public static String getWebsiteRedirectionHandlerSchemaSrc(){return getJsonSchemaPrefix() + "websiteRedirectionHandler.json";}
+    public static String getGuidanceHandlerSchemaSrc() {
+        return getJsonSchemaPrefix() + "guidanceHandler.json";
+    }
 }

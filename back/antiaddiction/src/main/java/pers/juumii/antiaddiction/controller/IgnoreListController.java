@@ -14,25 +14,6 @@ import javax.annotation.PostConstruct;
 @CrossOrigin
 @RestController
 public class IgnoreListController {
-    private static IgnoreListController first;
-    public static boolean isFirst(IgnoreListController target){
-        if(first == null){
-            first = target;
-            return true;
-        }
-        return first == target;
-    }
-    public static void pointToFirst(IgnoreListController target){
-        target.ignoreList = first.ignoreList;
-        target.dataListCollector = first.dataListCollector;
-        target.overallEnvironmentDataCollector = first.overallEnvironmentDataCollector;
-    }
-    @PostConstruct
-    public void init(){
-        if(!isFirst(this))
-            pointToFirst(this);
-    }
-
     @Autowired
     private IgnoreList ignoreList;
     @Autowired

@@ -4,7 +4,7 @@
         "type":{
             "title":"type",
             "type":"string",
-            "enum":["computer process","website"]
+            "enum":["process","website"]
         },
         "uri":{
             "title":"path",

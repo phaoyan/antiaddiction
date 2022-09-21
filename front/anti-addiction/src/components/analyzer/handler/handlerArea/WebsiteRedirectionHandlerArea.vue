@@ -15,12 +15,12 @@ const handlerData = handlerList.value[prop.index]
 
 <template>
     <div class="main">
-        <handler-label :name= handlerData.handler.name @deleteHandler="deleteHandler(index)"/>
+        <handler-label :name= handlerData[0] @deleteHandler="deleteHandler(index)"/>
         <div class="urls">
             <div class="content">from:</div>
-            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{handlerData.handler.sourceUrl}}</div>
+            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{handlerData[1]}}</div>
             <div class="content">to:</div>
-            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{ handlerData.handler.targetUrl}}</div>
+            <div class="content">&nbsp;&nbsp;&nbsp;&nbsp;{{ handlerData[2]}}</div>
         </div>
     </div>
 </template>
@@ -31,7 +31,6 @@ const handlerData = handlerList.value[prop.index]
 }
 .content{
     color:burlywood;
-    font-size: 110%;
     font-weight: 100;
 }
 </style>

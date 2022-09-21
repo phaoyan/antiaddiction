@@ -11,6 +11,11 @@ public class MomentaryBehavior{
     private String name, description;
 
     public MomentaryBehavior(){}
+
+    public MomentaryBehavior(String name) {
+        this.name = name;
+    }
+
     public MomentaryBehavior(OverallEnvironment overallEnvironment, LocalDateTime moment, String name, String description) {
         this.overallEnvironment = overallEnvironment;
         this.moment = moment;

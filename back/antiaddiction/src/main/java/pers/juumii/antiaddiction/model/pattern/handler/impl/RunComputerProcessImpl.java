@@ -1,9 +1,6 @@
 package pers.juumii.antiaddiction.model.pattern.handler.impl;
 
-import com.google.gson.JsonElement;
-import pers.juumii.antiaddiction.model.util.CMD;
-import pers.juumii.antiaddiction.model.util.AdaptedGsonProvider;
-import pers.juumii.antiaddiction.model.util.SpringUtils;
+import pers.juumii.antiaddiction.model.util.external.CMD;
 
 
 public class RunComputerProcessImpl extends RunImpl{
@@ -26,8 +23,7 @@ public class RunComputerProcessImpl extends RunImpl{
 
     @Override
     public void handle() {
-        CMD cmd = SpringUtils.getBean(CMD.class);
-        cmd.run(path);
+        CMD.run(path);
     }
 
 }

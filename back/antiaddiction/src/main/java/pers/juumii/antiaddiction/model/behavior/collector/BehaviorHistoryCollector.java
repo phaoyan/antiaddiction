@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pers.juumii.antiaddiction.model.behavior.BehaviorHistory;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class BehaviorHistoryCollector{
-
 
     @Autowired
     private BehaviorHistory history;

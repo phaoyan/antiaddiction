@@ -1,9 +1,8 @@
-package pers.juumii.antiaddiction.model.util;
+package pers.juumii.antiaddiction.model.util.external;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
-import pers.juumii.antiaddiction.SpringConfig;
+import pers.juumii.antiaddiction.model.util.Paths;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.util.List;
 @Service
 public class CMD {
 
-    public void exec(String cmd){
+    public static void exec(String cmd){
         try {
             File file = new File(Paths.getBatSrc());
             if(!file.exists())
@@ -25,41 +24,53 @@ public class CMD {
         }
     }
 
-    public void run(String path){
+    public static void exec(List<String> cmdLines){
+        StringBuilder cmd = new StringBuilder();
+        for(String line: cmdLines)
+            cmd.append(line).append("\n");
+        exec(cmd.toString());
+    }
+
+    public static void execAsAdmin(List<String> cmdLines){
+        cmdLines.add(0,"@cd/d\"%~dp0\"&(cacls \"%SystemDrive%\\System Volume Information\" >nul 2>nul)||(start \"\" mshta vbscript:CreateObject^(\"Shell.Application\"^).ShellExecute^(\"%~nx0\",\" %*\",\"\",\"runas\",1^)^(window.close^)&exit /b)\n");
+        exec(cmdLines);
+    }
+
+    public static void run(String path){
         if(path.contains(" "))
             exec("start \" \" \""+path+"\"");
         else exec("start "+path);
     }
 
-    public void runBat(String path, String... arg){}
+    public static void runBat(String path, String... arg){}
 
 
 
-    public void taskKill(String processName){
+    public static void taskKill(String processName){
         exec("cmd /c wmic process where name='" + processName + "'  delete");
     }
 
-    public void createFile(String path){
+    public static void createFile(String path){
 
     }
 
-    public void deleteFile(){
+    public static void deleteFile(){
 
     }
 
-    public void addLastLineToBat(String path, String line) throws IOException {
+    public static void addLastLineToBat(String path, String line) throws IOException {
         List<String> lines = FileUtils.readLines(new File(path),StandardCharsets.UTF_8);
         lines.add(line);
         FileUtils.writeLines(new File(path), lines);
     }
 
-    public void removeLastLineFromBat(String path) throws IOException {
+    public static void removeLastLineFromBat(String path) throws IOException {
         List<String> lines = FileUtils.readLines(new File(path),StandardCharsets.UTF_8);
         lines.remove(lines.size()-1);
         FileUtils.writeLines(new File(path), lines);
     }
 
-    public void temporallyAddLineAndRun(String src, String line){
+    public static void temporallyAddLineAndRun(String src, String line){
         try {
             addLastLineToBat(src, line);
             Thread.sleep(3000);
@@ -73,11 +84,6 @@ public class CMD {
     }
 
     public static void main(String[] args) throws IOException {
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
-        CMD cmd = ctx.getBean(CMD.class);
-        String path = "D:\\coding\\projects\\applicationProjects\\antiaddiction\\back\\antiaddiction\\src\\main\\resources\\static\\bat\\startup.bat";
-        cmd.addLastLineToBat(path, "test");
-        cmd.removeLastLineFromBat(path);
-
+        CMD.run("D:\\coding\\projects\\applicationProjects\\antiaddiction\\back\\antiaddiction\\src\\main\\resources\\static\\bat\\test.bat");
     }
 }
